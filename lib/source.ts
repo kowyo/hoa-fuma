@@ -25,3 +25,15 @@ export async function getLLMText(page: InferPageType<typeof source>) {
 
 ${processed}`;
 }
+
+export function getAvailableYears(): string[] {
+  return source.pageTree.children
+    .filter(
+      (node): node is typeof node & { name: string } =>
+        node.type === 'folder' &&
+        typeof node.name === 'string' &&
+        /^\d{4}$/.test(node.name)
+    )
+    .map((node) => node.name)
+    .sort((a, b) => b.localeCompare(a));
+}
