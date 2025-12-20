@@ -9,7 +9,6 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
-import FileUpload from "@/components/ui/file-upload";
 
 export default async function Page(props: {
   params: Promise<{ year: string; slug?: string[] }>;
@@ -32,7 +31,6 @@ export default async function Page(props: {
           })}
         />
       </DocsBody>
-      <FileUpload />
     </DocsPage>
   );
 }
