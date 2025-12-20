@@ -649,39 +649,7 @@ export default function FileUpload() {
               上传文件
             </Button>
           </div>
-        </div>
-      </div>
-
-      {/* -- When we have files -- */}
-      {filtered.length > 0 ? (
-        <>
-          {/* Bulk actions bar */}
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 text-[13px]">
-              <label className="inline-flex cursor-pointer items-center gap-1">
-                <input
-                  type="checkbox"
-                  className="accent-foreground size-3.5"
-                  checked={allSelected}
-                  onChange={toggleAll}
-                  aria-label={allSelected ? "Unselect all" : "Select all"}
-                />
-                <span className="text-muted-foreground">
-                  {selected.size}/{filtered.length} selected
-                </span>
-              </label>
-              {!noneSelected && (
-                <span className="text-muted-foreground hidden sm:inline">
-                  • {formatBytes(
-                    filtered
-                      .filter((f) => selected.has(f.id))
-                      .reduce((acc, f) => acc + getSize(f as UploadEntry), 0)
-                  )}{" "}
-                  total
-                </span>
-              )}
-            </div>
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 size="sm"
@@ -693,15 +661,25 @@ export default function FileUpload() {
                 <DownloadIcon className="-ms-0.5 size-3.5 opacity-60" aria-hidden="true" />
                 批量下载
               </Button>
-            </div>
           </div>
+        </div>
+      </div>
 
+      {/* -- When we have files -- */}
+      {filtered.length > 0 ? (
+        <>
           <div className="bg-background overflow-hidden rounded-md border">
             <Table>
                 <TableHeader className="text-xs">
                   <TableRow className="bg-muted/50">
                     <TableHead className="h-9 w-10 py-2">
-                      <span className="sr-only">Select</span>
+                      <input
+                        type="checkbox"
+                        className="accent-foreground size-3.5"
+                        checked={allSelected}
+                        onChange={toggleAll}
+                        aria-label={allSelected ? "Unselect all" : "Select all"}
+                      />
                     </TableHead>
                     <TableHead className="h-9 py-2">文件名</TableHead>
                     <TableHead className="h-9 py-2">最后修改日期</TableHead>
