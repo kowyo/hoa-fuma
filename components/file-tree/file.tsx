@@ -5,6 +5,7 @@ import { useFileTree } from "./ctx"
 import { getFileIcon, formatBytes } from "./utils"
 import { ExternalLinkIcon, DownloadIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function File({ 
   name, 
@@ -55,21 +56,25 @@ export function File({
       <TableCell className="py-2 text-right whitespace-nowrap">
         {url && (
             <>
-            <Button
-                size="icon"
-                variant="ghost"
-                className="text-muted-foreground/80 hover:text-foreground size-8 hover:bg-transparent"
-                onClick={() => window.open(url, "_blank", "noopener,noreferrer")}
-            >
-                <ExternalLinkIcon className="size-4" />
-            </Button>
-            <Button
-                size="icon"
-                variant="ghost"
-                className="text-muted-foreground/80 hover:text-foreground size-8 hover:bg-transparent"
-            >
-                <DownloadIcon className="size-4" />
-            </Button>
+              <Button variant="ghost" size="icon-sm" asChild>
+                <Link
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <ExternalLinkIcon />
+                </Link>
+              </Button>
+              <Button variant="ghost" size="icon-sm" asChild>
+                <a
+                    href={url}
+                    download
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <DownloadIcon />
+                </a>
+              </Button>
             </>
         )}
       </TableCell>

@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/table"
 import { ReactNode, useState, Children, isValidElement, useMemo, ReactElement, useEffect, useRef } from "react"
 import { SearchIcon, UploadCloudIcon, DownloadIcon } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { FileTreeContext } from "./ctx"
 import { collectIds } from "./utils"
+import { Button } from "@/components/ui/button"
 
 export function Files({ children, className }: { children: ReactNode, className?: string }) {
   const [query, setQuery] = useState("")
@@ -102,7 +102,7 @@ export function Files({ children, className }: { children: ReactNode, className?
 
           <div className="ms-2 hidden sm:flex gap-2">
             <Button variant="outline" size="sm">
-              <UploadCloudIcon className="-ms-0.5 size-3.5 opacity-60" aria-hidden="true" />
+              <UploadCloudIcon />
               上传文件
             </Button>
           </div>
@@ -112,7 +112,7 @@ export function Files({ children, className }: { children: ReactNode, className?
                 size="sm"
                 disabled={selected.size === 0}
               >
-                <DownloadIcon className="-ms-0.5 size-3.5 opacity-60" aria-hidden="true" />
+                <DownloadIcon />
                 批量下载
               </Button>
           </div>
