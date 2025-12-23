@@ -28,6 +28,24 @@ export function collectIds(nodes: ReactNode, parentPath: string = ""): string[] 
   return ids
 }
 
+export function hasMatch(nodes: ReactNode, query: string): boolean {
+  if (!query) return true
+  const normalizedQuery = query.toLowerCase()
+  let match = false
+  Children.forEach(nodes, (child) => {
+    if (match || !isValidElement(child)) return
+    const props = child.props as { name?: string; children?: ReactNode }
+    if (props.name?.toLowerCase().includes(normalizedQuery)) {
+      match = true
+      return
+    }
+    if (props.children && hasMatch(props.children, query)) {
+      match = true
+    }
+  })
+  return match
+}
+
 export function getFileIcon(name: string, type: string = "") {
   const ext = name.split(".").pop()?.toLowerCase() || ""
 

@@ -20,10 +20,14 @@ export function File({
   url?: string,
   type?: string
 }) {
-  const { level, path, selected, toggleSelect, isSelectable } = useFileTree()
+  const { level, path, selected, toggleSelect, isSelectable, searchQuery } = useFileTree()
   const icon = getFileIcon(name, type)
   const fullPath = path ? `${path}/${name}` : name
   const isSelected = selected.has(fullPath)
+
+  if (searchQuery && !name.toLowerCase().includes(searchQuery.toLowerCase())) {
+    return null
+  }
 
   return (
     <TableRow 

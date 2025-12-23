@@ -7,6 +7,7 @@ interface FileTreeContextValue {
   toggleSelect: (id: string) => void
   selectBatch: (ids: string[], selected: boolean) => void
   isSelectable: boolean
+  searchQuery: string
 }
 
 export const FileTreeContext = createContext<FileTreeContextValue>({
@@ -16,6 +17,7 @@ export const FileTreeContext = createContext<FileTreeContextValue>({
   toggleSelect: () => {},
   selectBatch: () => {},
   isSelectable: false,
+  searchQuery: "",
 })
 
 export function useFileTree() {

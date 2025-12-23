@@ -3,6 +3,7 @@
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -10,7 +11,7 @@ import {
 import { ReactNode, useState, Children, isValidElement, useMemo, ReactElement, useEffect, useRef } from "react"
 import { SearchIcon, UploadCloudIcon, DownloadIcon } from "lucide-react"
 import { FileTreeContext } from "./ctx"
-import { collectIds } from "./utils"
+import { collectIds, hasMatch } from "./utils"
 import { Button } from "@/components/ui/button"
 
 export function Files({ children, className }: { children: ReactNode, className?: string }) {
@@ -21,6 +22,11 @@ export function Files({ children, className }: { children: ReactNode, className?
   const allIds = useMemo(() => collectIds(children), [children])
   const isAllSelected = allIds.length > 0 && allIds.every(id => selected.has(id))
   const isIndeterminate = selected.size > 0 && !isAllSelected
+
+  const matches = useMemo(() => {
+    if (!query) return true
+    return hasMatch(children, query)
+  }, [children, query])
 
   useEffect(() => {
     if (checkboxRef.current) {
@@ -140,8 +146,14 @@ export function Files({ children, className }: { children: ReactNode, className?
             </TableRow>
           </TableHeader>
           <TableBody className="text-[13px]">
-            <FileTreeContext.Provider value={{ level: 0, path: "", selected, toggleSelect, selectBatch, isSelectable: true }}>
-              {children}
+            <FileTreeContext.Provider value={{ level: 0, path: "", selected, toggleSelect, selectBatch, isSelectable: true, searchQuery: query }}>
+              {matches ? children : (
+                <TableRow>
+                  <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                    未找到相关文件
+                  </TableCell>
+                </TableRow>
+              )}
             </FileTreeContext.Provider>
           </TableBody>
         </Table>

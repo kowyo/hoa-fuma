@@ -2,9 +2,9 @@
 
 import { TableCell, TableRow } from "@/components/ui/table"
 import { Folder as FolderIcon, FolderOpen } from "lucide-react"
-import { useState, ReactNode, useMemo } from "react"
+import { useState, ReactNode, useMemo, useEffect } from "react"
 import { FileTreeContext, useFileTree } from "./ctx"
-import { formatBytes, collectIds } from "./utils"
+import { formatBytes, collectIds, hasMatch } from "./utils"
 
 export function Folder({ 
   name, 
@@ -19,12 +19,25 @@ export function Folder({
   date?: string,
   size?: number
 }) {
-  const { level, path, selected, toggleSelect, selectBatch, isSelectable } = useFileTree()
+  const { level, path, selected, toggleSelect, selectBatch, isSelectable, searchQuery } = useFileTree()
   const [isOpen, setIsOpen] = useState(defaultOpen === true || defaultOpen === "true")
   
   const fullPath = path ? `${path}/${name}` : name
   const allChildIds = useMemo(() => collectIds(children, fullPath), [children, fullPath])
   const isSelected = selected.has(fullPath)
+
+  const selfMatch = searchQuery ? name.toLowerCase().includes(searchQuery.toLowerCase()) : true
+  const childMatch = useMemo(() => hasMatch(children, searchQuery), [children, searchQuery])
+
+  useEffect(() => {
+    if (searchQuery && childMatch) {
+      setIsOpen(true)
+    }
+  }, [searchQuery, childMatch])
+
+  if (searchQuery && !selfMatch && !childMatch) {
+    return null
+  }
   
   const handleSelect = () => {
     const shouldSelect = !isSelected
@@ -33,7 +46,15 @@ export function Folder({
   }
 
   return (
-    <FileTreeContext.Provider value={{ level: level + 1, path: fullPath, selected, toggleSelect, selectBatch, isSelectable }}>
+    <FileTreeContext.Provider value={{ 
+      level: level + 1, 
+      path: fullPath, 
+      selected, 
+      toggleSelect, 
+      selectBatch, 
+      isSelectable,
+      searchQuery: selfMatch ? "" : searchQuery 
+    }}>
       <TableRow 
         className="hover:bg-muted/50 cursor-pointer h-12" 
         onClick={() => setIsOpen(!isOpen)}
