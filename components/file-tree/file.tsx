@@ -87,7 +87,7 @@ export function File({
             <>
               <Button variant="ghost" size="icon-sm" asChild>
                 <Link
-                    href={`https://prev.hoa.moe?file=${encodeURI(finalUrl)}`}
+                    href={`https://prev.hoa.moe?file=${encodeURIComponent(finalUrl)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                 >
