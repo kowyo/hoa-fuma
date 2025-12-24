@@ -14,7 +14,7 @@ import { FileTreeContext } from "./ctx"
 import { collectIds, hasMatch, collectFilesWithUrls } from "./utils"
 import { Button } from "@/components/ui/button"
 import { CircularProgress } from "@/components/ui/circular-progress"
-import JSZip from "jszip"
+import { downloadBatchFiles } from "@/lib/download"
 
 export function Files({ children, className }: { children: ReactNode, className?: string }) {
   const [query, setQuery] = useState("")
@@ -79,45 +79,9 @@ export function Files({ children, className }: { children: ReactNode, className?
         return
       }
 
-      const zip = new JSZip()
-      let completed = 0
-      
-      await Promise.all(
-        selectedFiles.map(async (file) => {
-          const response = await fetch(file.url)
-          if (!response.ok) throw new Error(`Failed to fetch ${file.path}`)
-          const blob = await response.blob()
-          
-          // Ensure extension is preserved in the ZIP
-          let zipPath = file.path
-          const urlPath = file.url.split("?")[0].split("#")[0]
-          const lastDotIndex = urlPath.lastIndexOf(".")
-          if (lastDotIndex !== -1) {
-            const ext = urlPath.slice(lastDotIndex)
-            if (ext.includes("/") || ext.length > 6) {
-              // Not a valid extension
-            } else if (!zipPath.toLowerCase().endsWith(ext.toLowerCase())) {
-              zipPath += ext
-            }
-          }
-          
-          zip.file(zipPath, blob)
-          completed++
-          setDownloadProgress(Math.round((completed / selectedFiles.length) * 90))
-        })
-      )
-
-      const content = await zip.generateAsync({ type: "blob" }, (metadata) => {
-        setDownloadProgress(90 + Math.round(metadata.percent * 0.1))
+      await downloadBatchFiles(selectedFiles, (progress) => {
+        setDownloadProgress(progress)
       })
-      const url = URL.createObjectURL(content)
-      const link = document.createElement("a")
-      link.href = url
-      link.download = `download-${new Date().getTime()}.zip`
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
     } catch (error) {
       console.error("Batch download failed:", error)
       alert("批量下载失败，请重试")

@@ -5,7 +5,10 @@ import { useFileTree } from "./ctx"
 import { getFileIcon, formatBytes } from "./utils"
 import { ExternalLinkIcon, DownloadIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { CircularProgress } from "@/components/ui/circular-progress"
+import { downloadSingleFile } from "@/lib/download"
 import Link from "next/link"
+import { useState } from "react"
 
 export function File({ 
   name, 
@@ -21,9 +24,28 @@ export function File({
   type?: string
 }) {
   const { level, path, selected, toggleSelect, isSelectable, searchQuery } = useFileTree()
+  const [isDownloading, setIsDownloading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const icon = getFileIcon(name, type)
   const fullPath = path ? `${path}/${name}` : name
   const isSelected = selected.has(fullPath)
+
+  const handleDownload = async (e: React.MouseEvent) => {
+    if (!url) return
+    e.preventDefault()
+    setIsDownloading(true)
+    setProgress(0)
+
+    try {
+      await downloadSingleFile(url, name, (p) => setProgress(p))
+    } catch (error) {
+      console.error("Download failed:", error)
+      alert("下载失败，请重试")
+    } finally {
+      setIsDownloading(false)
+      setProgress(0)
+    }
+  }
 
   if (searchQuery && !name.toLowerCase().includes(searchQuery.toLowerCase())) {
     return null
@@ -69,15 +91,17 @@ export function File({
                     <ExternalLinkIcon />
                 </Link>
               </Button>
-              <Button variant="ghost" size="icon-sm" asChild>
-                <a
-                    href={url}
-                    download
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <DownloadIcon />
-                </a>
+              <Button 
+                variant="ghost" 
+                size="icon-sm" 
+                onClick={handleDownload}
+                disabled={isDownloading}
+              >
+                {isDownloading ? (
+                  <CircularProgress progress={progress} size={16} />
+                ) : (
+                  <DownloadIcon />
+                )}
               </Button>
             </>
         )}
