@@ -75,9 +75,8 @@ export async function downloadBatchFiles(
       const lastDotIndex = urlPath.lastIndexOf(".");
       if (lastDotIndex !== -1) {
         const ext = urlPath.slice(lastDotIndex);
-        if (ext.includes("/") || ext.length > 6) {
-          // Not a valid extension
-        } else if (!zipPath.toLowerCase().endsWith(ext.toLowerCase())) {
+        const isValidExtension = /^\.[a-zA-Z0-9]{1,10}$/.test(ext);
+        if (isValidExtension && !zipPath.toLowerCase().endsWith(ext.toLowerCase())) {
           zipPath += ext;
         }
       }
