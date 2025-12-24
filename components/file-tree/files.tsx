@@ -17,6 +17,7 @@ import { CircularProgress } from "@/components/ui/circular-progress"
 import { downloadBatchFiles } from "@/lib/download"
 import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
+import { toast } from "sonner"
 
 export function Files({ children, className }: { children: ReactNode, className?: string }) {
   const [query, setQuery] = useState("")
@@ -83,16 +84,16 @@ export function Files({ children, className }: { children: ReactNode, className?
         }))
 
       if (selectedFiles.length === 0) {
-        alert("请选择要下载的文件")
+        toast.error("请选择要下载的文件")
         return
       }
 
       await downloadBatchFiles(selectedFiles, (progress) => {
         setDownloadProgress(progress)
       })
-    } catch (error) {
+    } catch (error: any) {
       console.error("Batch download failed:", error)
-      alert("批量下载失败，请重试")
+      toast.error(`下载失败: ${error.message}`)
     } finally {
       setIsDownloading(false)
     }

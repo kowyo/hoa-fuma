@@ -9,6 +9,7 @@ import { CircularProgress } from "@/components/ui/circular-progress"
 import { downloadSingleFile } from "@/lib/download"
 import Link from "next/link"
 import { useState } from "react"
+import { toast } from "sonner"
 
 export function File({ 
   name, 
@@ -40,9 +41,9 @@ export function File({
 
     try {
       await downloadSingleFile(finalUrl, name, (p) => setProgress(p))
-    } catch (error) {
+    } catch (error: any) {
       console.error("Download failed:", error)
-      alert("下载失败，请重试")
+      toast.error(`下载失败: ${error.message}`)
     } finally {
       setIsDownloading(false)
       setProgress(0)
