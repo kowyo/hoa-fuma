@@ -11,7 +11,10 @@ import {
 import { ReactNode, useState, Children, isValidElement, useMemo, ReactElement, useEffect, useRef } from "react"
 import { SearchIcon, UploadCloudIcon, DownloadIcon, ZapIcon } from "lucide-react"
 import { FileTreeContext } from "./ctx"
+import { cn } from "@/lib/utils"
 import { collectIds, hasMatch, collectFilesWithUrls, getAcceleratedUrl } from "./utils"
+import { File } from "./file"
+import { Folder } from "./folder"
 import { Button } from "@/components/ui/button"
 import { CircularProgress } from "@/components/ui/circular-progress"
 import { downloadBatchFiles } from "@/lib/download"
@@ -105,13 +108,19 @@ export function Files({ children, className }: { children: ReactNode, className?
     const traverse = (nodes: ReactNode) => {
       Children.forEach(nodes, (child) => {
         if (!isValidElement(child)) return
-        // Heuristic: if it has "children" prop, it's likely a folder, otherwise a file
-        // Or check if it has a "name" prop.
         const element = child as ReactElement<{ children?: ReactNode }>
+        if (element.type === File) {
+          count++
+          return
+        }
+        if (element.type === Folder) {
+          if (element.props.children) {
+            traverse(element.props.children)
+          }
+          return
+        }
         if (element.props.children) {
           traverse(element.props.children)
-        } else {
-          count++
         }
       })
     }
@@ -120,7 +129,7 @@ export function Files({ children, className }: { children: ReactNode, className?
   }, [children])
 
   return (
-    <div className={`flex flex-col gap-3 w-full not-prose ${className || ''}`}>
+    <div className={cn("flex flex-col gap-3 w-full not-prose", className)}>
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-3">
           <h3 className="text-sm font-medium">
