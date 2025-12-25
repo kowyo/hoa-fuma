@@ -9,7 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { ReactNode, useState, useMemo, useEffect, useRef } from "react"
-import { SearchIcon, UploadCloudIcon, DownloadIcon, ZapIcon } from "lucide-react"
+import { SearchIcon, UploadCloudIcon, DownloadIcon, ZapIcon, HardDrive } from "lucide-react"
 import { FileTreeContext } from "./ctx"
 import { cn } from "@/lib/utils"
 import { collectIds, hasMatch, collectFilesWithUrls, getAcceleratedUrl } from "./utils"
@@ -20,7 +20,7 @@ import { Switch } from "@/components/ui/switch"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 
-export function Files({ children, className }: { children: ReactNode, className?: string }) {
+export function Files({ children, className, url }: { children: ReactNode, className?: string, url?: string }) {
   const [query, setQuery] = useState("")
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [isDownloading, setIsDownloading] = useState(false)
@@ -152,6 +152,18 @@ export function Files({ children, className }: { children: ReactNode, className?
               <span className="text-[13px]">上传文件</span>
             </Button>
           </div>
+
+          <Button
+            variant="outline"
+            size="sm"
+            className="h-8 rounded-md border-input hover:bg-muted/50 px-3"
+            asChild
+          >
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <HardDrive className="size-4 text-muted-foreground" />
+              <span className="text-[13px]">网盘计划</span>
+            </a>
+          </Button>
           
           <Button
             variant="outline"
