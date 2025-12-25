@@ -85,51 +85,51 @@ export function getFileIcon(url: string) {
 
   // PDF files
   if (ext === "pdf") {
-    return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
+    return <FileTextIcon className="size-4" aria-hidden="true" />
   }
 
   // Word documents
   if (ext === "doc" || ext === "docx") {
-    return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
+    return <FileTextIcon className="size-4" aria-hidden="true" />
   }
 
   // PowerPoint presentations
   if (ext === "ppt" || ext === "pptx") {
-    return <FileChartPie className="size-4 opacity-60" aria-hidden="true" />
+    return <FileChartPie className="size-4" aria-hidden="true" />
   }
 
   // Excel/Spreadsheet files
   if (ext === "xls" || ext === "xlsx" || ext === "csv") {
-    return <FileSpreadsheet className="size-4 opacity-60" aria-hidden="true" />
+    return <FileSpreadsheet className="size-4" aria-hidden="true" />
   }
 
   // Archive files
   if (ext === "zip" || ext === "rar" || ext === "7z" || ext === "tar" || ext === "gz") {
-    return <FileArchive className="size-4 opacity-60" aria-hidden="true" />
+    return <FileArchive className="size-4" aria-hidden="true" />
   }
 
   // Video files
   if (["mp4", "mov", "webm", "mkv", "avi", "flv", "wmv"].includes(ext)) {
-    return <FilePlay className="size-4 opacity-60" aria-hidden="true" />
+    return <FilePlay className="size-4" aria-hidden="true" />
   }
 
   // Audio files
   if (["mp3", "wav", "flac", "m4a", "aac", "ogg", "wma"].includes(ext)) {
-    return <FileHeadphone className="size-4 opacity-60" aria-hidden="true" />
+    return <FileHeadphone className="size-4" aria-hidden="true" />
   }
 
   // Image files
   if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "ico"].includes(ext)) {
-    return <FileImage className="size-4 opacity-60" aria-hidden="true" />
+    return <FileImage className="size-4" aria-hidden="true" />
   }
 
   // Text files and code files
   if (["txt", "md", "mdx", "tsx", "jsx", "ts", "js", "json", "css", "html", "xml", "yaml", "yml"].includes(ext)) {
-    return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
+    return <FileTextIcon className="size-4" aria-hidden="true" />
   }
 
   // Default file icon
-  return <FileIcon className="size-4 opacity-60" aria-hidden="true" />
+  return <FileIcon className="size-4" aria-hidden="true" />
 }
 
 export const formatBytes = (bytes: number, decimals = 2): string => {
