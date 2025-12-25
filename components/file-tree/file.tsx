@@ -103,7 +103,7 @@ export function File({
                 disabled={isDownloading}
               >
                 {isDownloading ? (
-                  <CircularProgress progress={progress} size={16} />
+                  <CircularProgress progress={progress} />
                 ) : (
                   <DownloadIcon />
                 )}

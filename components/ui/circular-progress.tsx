@@ -1,50 +1,52 @@
+import { cn } from "@/lib/utils"
+
 interface CircularProgressProps {
-  progress: number;
-  size?: number;
-  strokeWidth?: number;
-  className?: string;
+  progress: number
+  size?: number
+  strokeWidth?: number
+  className?: string
 }
 
 export function CircularProgress({
   progress,
   size = 16,
   strokeWidth = 2,
-  className = '',
+  className,
 }: CircularProgressProps) {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = radius * 2 * Math.PI;
-  const offset = circumference - (progress / 100) * circumference;
+  const radius = (size - strokeWidth) / 2
+  const circumference = 2 * Math.PI * radius
+  const offset = circumference - (progress / 100) * circumference
 
   return (
     <svg
       width={size}
       height={size}
-      viewBox={`0 0 ${size} ${size}`}
-      className={`transform -rotate-90 ${className}`}
+      className={cn("shrink-0", className)}
+      style={{ minWidth: size, minHeight: size }}
     >
+      {/* Background circle */}
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
+        fill="none"
         stroke="currentColor"
         strokeWidth={strokeWidth}
-        fill="transparent"
-        className="opacity-20"
+        opacity={0.2}
       />
+      {/* Progress circle */}
       <circle
         cx={size / 2}
         cy={size / 2}
         r={radius}
+        fill="none"
         stroke="currentColor"
         strokeWidth={strokeWidth}
-        fill="transparent"
-        strokeDasharray={circumference}
-        style={{
-          strokeDashoffset: offset,
-          transition: 'stroke-dashoffset 0.3s ease-in-out',
-        }}
         strokeLinecap="round"
+        strokeDasharray={circumference}
+        strokeDashoffset={offset}
+        transform={`rotate(-90 ${size / 2} ${size / 2})`}
       />
     </svg>
-  );
-};
+  )
+}

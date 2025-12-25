@@ -173,7 +173,7 @@ export function Files({ children, className, url }: { children: ReactNode, class
             onClick={handleBatchDownload}
           >
             {isDownloading ? (
-              <CircularProgress progress={downloadProgress} size={16} />
+              <CircularProgress progress={downloadProgress} />
             ) : (
               <DownloadIcon className={cn("size-4 text-muted-foreground")} />
             )}
