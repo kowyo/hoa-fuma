@@ -1,11 +1,12 @@
 import {
-  FileArchiveIcon,
+  FileArchive,
   FileIcon,
-  FileSpreadsheetIcon,
+  FileSpreadsheet,
   FileTextIcon,
-  HeadphonesIcon,
-  ImageIcon,
-  VideoIcon,
+  FileHeadphone,
+  FileImage,
+  FilePlay,
+  FileChartPie,
 } from "lucide-react"
 import React, { Children, isValidElement, ReactElement, ReactNode } from "react"
 
@@ -77,55 +78,57 @@ export function getAcceleratedUrl(url: string) {
   return newUrl
 }
 
-export function getFileIcon(name: string, type: string = "") {
-  const ext = name.split(".").pop()?.toLowerCase() || ""
+export function getFileIcon(url: string) {
+  const urlPath = new URL(url).pathname
+  const urlDecoded = decodeURIComponent(urlPath)
+  const ext = urlDecoded.split(".").pop()?.toLowerCase() || ""
 
-  if (
-    type.includes("pdf") ||
-    ext === "pdf" ||
-    type.includes("word") ||
-    ext === "doc" ||
-    ext === "docx" ||
-    type.includes("text") ||
-    ext === "txt" ||
-    ext === "md" ||
-    ext === "mdx" ||
-    ext === "tsx" ||
-    ext === "jsx" ||
-    ext === "ts" ||
-    ext === "js" ||
-    ext === "json" ||
-    ext === "css"
-  ) {
+  // PDF files
+  if (ext === "pdf") {
     return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
   }
-  if (
-    type.includes("zip") ||
-    type.includes("archive") ||
-    ext === "zip" ||
-    ext === "rar" ||
-    ext === "7z" ||
-    ext === "tar"
-  ) {
-    return <FileArchiveIcon className="size-4 opacity-60" aria-hidden="true" />
+
+  // Word documents
+  if (ext === "doc" || ext === "docx") {
+    return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
   }
-  if (
-    type.includes("excel") ||
-    ext === "xls" ||
-    ext === "xlsx" ||
-    ext === "csv"
-  ) {
-    return <FileSpreadsheetIcon className="size-4 opacity-60" aria-hidden="true" />
+
+  // PowerPoint presentations
+  if (ext === "ppt" || ext === "pptx") {
+    return <FileChartPie className="size-4 opacity-60" aria-hidden="true" />
   }
-  if (type.startsWith("video/") || ["mp4", "mov", "webm", "mkv"].includes(ext)) {
-    return <VideoIcon className="size-4 opacity-60" aria-hidden="true" />
+
+  // Excel/Spreadsheet files
+  if (ext === "xls" || ext === "xlsx" || ext === "csv") {
+    return <FileSpreadsheet className="size-4 opacity-60" aria-hidden="true" />
   }
-  if (type.startsWith("audio/") || ["mp3", "wav", "flac", "m4a"].includes(ext)) {
-    return <HeadphonesIcon className="size-4 opacity-60" aria-hidden="true" />
+
+  // Archive files
+  if (ext === "zip" || ext === "rar" || ext === "7z" || ext === "tar" || ext === "gz") {
+    return <FileArchive className="size-4 opacity-60" aria-hidden="true" />
   }
-  if (type.startsWith("image/") || ["png", "jpg", "jpeg", "gif", "webp", "svg"].includes(ext)) {
-    return <ImageIcon className="size-4 opacity-60" aria-hidden="true" />
+
+  // Video files
+  if (["mp4", "mov", "webm", "mkv", "avi", "flv", "wmv"].includes(ext)) {
+    return <FilePlay className="size-4 opacity-60" aria-hidden="true" />
   }
+
+  // Audio files
+  if (["mp3", "wav", "flac", "m4a", "aac", "ogg", "wma"].includes(ext)) {
+    return <FileHeadphone className="size-4 opacity-60" aria-hidden="true" />
+  }
+
+  // Image files
+  if (["png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "ico"].includes(ext)) {
+    return <FileImage className="size-4 opacity-60" aria-hidden="true" />
+  }
+
+  // Text files and code files
+  if (["txt", "md", "mdx", "tsx", "jsx", "ts", "js", "json", "css", "html", "xml", "yaml", "yml"].includes(ext)) {
+    return <FileTextIcon className="size-4 opacity-60" aria-hidden="true" />
+  }
+
+  // Default file icon
   return <FileIcon className="size-4 opacity-60" aria-hidden="true" />
 }
 

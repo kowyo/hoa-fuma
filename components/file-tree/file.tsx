@@ -27,7 +27,7 @@ export function File({
   const { level, path, selected, toggleSelect, isSelectable, searchQuery, isAccelerated } = useFileTree()
   const [isDownloading, setIsDownloading] = useState(false)
   const [progress, setProgress] = useState(0)
-  const icon = getFileIcon(name, type)
+  const icon = getFileIcon(url)
   const fullPath = path ? `${path}/${name}` : name
   const isSelected = selected.has(fullPath)
 
