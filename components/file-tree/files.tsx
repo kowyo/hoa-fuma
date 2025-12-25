@@ -187,14 +187,16 @@ export function Files({ children, className, url }: { children: ReactNode, class
           <TableHeader className="text-xs">
             <TableRow className="bg-muted/50 whitespace-nowrap">
               <TableHead className="h-9 w-10 py-2">
-                <input
-                  type="checkbox"
-                  className="accent-foreground size-3.5"
-                  checked={isAllSelected}
-                  onChange={toggleAll}
-                  ref={checkboxRef}
-                  aria-label={isAllSelected ? "Unselect all" : "Select all"}
-                />
+                <div className="flex items-center h-full">
+                  <input
+                    type="checkbox"
+                    className="accent-foreground size-3.5"
+                    checked={isAllSelected}
+                    onChange={toggleAll}
+                    ref={checkboxRef}
+                    aria-label={isAllSelected ? "Unselect all" : "Select all"}
+                  />
+                </div>
               </TableHead>
               <TableHead className="h-9 py-2">文件名</TableHead>
               <TableHead className="h-9 py-2">文件大小</TableHead>

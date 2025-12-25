@@ -63,13 +63,15 @@ export function Folder({
       >
         <TableCell className="py-2 w-10" onClick={(e) => e.stopPropagation()}>
           {isSelectable && (
-            <input
-              type="checkbox"
-              className="accent-foreground size-3.5"
-              checked={isSelected}
-              onChange={handleSelect}
-              aria-label={`Select ${name}`}
-            />
+            <div className="flex items-center h-full">
+              <input
+                type="checkbox"
+                className="accent-foreground size-3.5"
+                checked={isSelected}
+                onChange={handleSelect}
+                aria-label={`Select ${name}`}
+              />
+            </div>
           )}
         </TableCell>
         <TableCell className="py-2 font-medium">

@@ -61,13 +61,15 @@ export function File({
     >
       <TableCell className="py-2 w-10">
         {isSelectable && (
-          <input
-            type="checkbox"
-            className="accent-foreground size-3.5"
-            checked={isSelected}
-            onChange={() => toggleSelect(fullPath)}
-            aria-label={`Select ${name}`}
-          />
+          <div className="flex items-center h-full">
+            <input
+              type="checkbox"
+              className="accent-foreground size-3.5"
+              checked={isSelected}
+              onChange={() => toggleSelect(fullPath)}
+              aria-label={`Select ${name}`}
+            />
+          </div>
         )}
       </TableCell>
       <TableCell className="py-2 font-medium">
