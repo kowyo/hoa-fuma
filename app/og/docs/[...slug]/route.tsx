@@ -17,7 +17,7 @@ export async function GET(
     <DefaultImage
       title={page.data.title}
       description={page.data.description}
-      site="My App"
+      site="HITSZ 课程攻略共享计划"
     />,
     {
       width: 1200,
