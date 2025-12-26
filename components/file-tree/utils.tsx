@@ -30,7 +30,7 @@ export function getTreeMetadata(nodes: ReactNode, query: string = "", parentPath
   const allIds: string[] = []
   const files: TreeFile[] = []
   const normalizedQuery = query.toLowerCase()
-  let hasMatchInTree = false
+  let hasVisibleNode = false
 
   Children.forEach(nodes, (child) => {
     if (!isValidElement(child)) return
@@ -41,29 +41,28 @@ export function getTreeMetadata(nodes: ReactNode, query: string = "", parentPath
     if (!name) return
 
     const fullPath = parentPath ? `${parentPath}/${name}` : name
-    allIds.push(fullPath)
-
     const isSelfMatch = normalizedQuery ? name.toLowerCase().includes(normalizedQuery) : true
-    if (isSelfMatch && !url) {
-        // If it's a folder and it matches, we still need to check children for their matches
-        // but the folder itself is a match.
-        hasMatchInTree = true
+    const queryForChildren = isSelfMatch ? "" : query
+    const childMetadata = children ? getTreeMetadata(children, queryForChildren, fullPath) : null
+    const hasDescendantMatch = childMetadata?.hasMatch ?? false
+    const isVisible = query ? (isSelfMatch || hasDescendantMatch) : true
+
+    if (isVisible) {
+      allIds.push(fullPath)
+      hasVisibleNode = true
     }
 
-    if (url) {
+    if (url && isVisible) {
       files.push({ path: fullPath, url, name })
-      if (isSelfMatch) hasMatchInTree = true
     }
 
-    if (children) {
-      const childMetadata = getTreeMetadata(children, query, fullPath)
+    if (childMetadata) {
       allIds.push(...childMetadata.allIds)
       files.push(...childMetadata.files)
-      if (childMetadata.hasMatch) hasMatchInTree = true
     }
   })
 
-  return { allIds, files, hasMatch: !query || hasMatchInTree }
+  return { allIds, files, hasMatch: hasVisibleNode }
 }
 
 export function getAcceleratedUrl(url: string) {
