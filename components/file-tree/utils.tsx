@@ -42,8 +42,7 @@ export function getTreeMetadata(nodes: ReactNode, query: string = "", parentPath
 
     const fullPath = parentPath ? `${parentPath}/${name}` : name
     const isSelfMatch = normalizedQuery ? name.toLowerCase().includes(normalizedQuery) : true
-    const queryForChildren = isSelfMatch ? "" : query
-    const childMetadata = children ? getTreeMetadata(children, queryForChildren, fullPath) : null
+    const childMetadata = children ? getTreeMetadata(children, query, fullPath) : null
     const hasDescendantMatch = childMetadata?.hasMatch ?? false
     const isVisible = query ? (isSelfMatch || hasDescendantMatch) : true
 

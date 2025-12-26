@@ -44,9 +44,18 @@ export function Folder({
   const isSelfMatch = searchQuery ? name.toLowerCase().includes(searchQuery.toLowerCase()) : true
 
   // Open folder if search query matches children
-  if (searchQuery && hasMatch && !isSelfMatch && !isOpen) {
-    setIsOpen(true)
-  }
+  useEffect(() => {
+    if (searchQuery && hasMatch && !isSelfMatch && !isOpen) {
+      setIsOpen(true)
+    }
+  }, [searchQuery, hasMatch, isSelfMatch, isOpen])
+
+  // Reset folder state when search is cleared
+  useEffect(() => {
+    if (!searchQuery) {
+      setIsOpen(defaultOpen === true || defaultOpen === "true")
+    }
+  }, [searchQuery, defaultOpen])
 
   if (!hasMatch && !isSelfMatch) {
     return null
@@ -65,7 +74,7 @@ export function Folder({
       toggleSelect, 
       selectBatch, 
       isSelectable,
-      searchQuery: isSelfMatch ? "" : searchQuery,
+      searchQuery,
       isAccelerated,
       getMetadata
     }}>
