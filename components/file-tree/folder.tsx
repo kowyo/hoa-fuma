@@ -2,7 +2,7 @@
 
 import { TableCell, TableRow } from "@/components/ui/table"
 import { Folder as FolderIcon, FolderOpen } from "lucide-react"
-import { useState, ReactNode, useMemo, useEffect } from "react"
+import { useState, ReactNode, useMemo } from "react"
 import { FileTreeContext, useFileTree } from "./ctx"
 import { formatBytes } from "./utils"
 
@@ -32,6 +32,7 @@ export function Folder({
   } = useFileTree()
   
   const [isOpen, setIsOpen] = useState(defaultOpen === true || defaultOpen === "true")
+  const [prevSearchQuery, setPrevSearchQuery] = useState("")
   
   const fullPath = path ? `${path}/${name}` : name
   
@@ -43,19 +44,15 @@ export function Folder({
   const isSelected = selected.has(fullPath)
   const isSelfMatch = searchQuery ? name.toLowerCase().includes(searchQuery.toLowerCase()) : true
 
-  // Open folder if search query matches children
-  useEffect(() => {
-    if (searchQuery && hasMatch && !isSelfMatch && !isOpen) {
-      setIsOpen(true)
-    }
-  }, [searchQuery, hasMatch, isSelfMatch, isOpen])
-
-  // Reset folder state when search is cleared
-  useEffect(() => {
+  // Adjust state during render when searchQuery changes
+  if (searchQuery !== prevSearchQuery) {
+    setPrevSearchQuery(searchQuery)
     if (!searchQuery) {
       setIsOpen(defaultOpen === true || defaultOpen === "true")
+    } else if (hasMatch && !isSelfMatch) {
+      setIsOpen(true)
     }
-  }, [searchQuery, defaultOpen])
+  }
 
   if (!hasMatch && !isSelfMatch) {
     return null
