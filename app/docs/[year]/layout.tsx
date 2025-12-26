@@ -3,7 +3,7 @@ import { DocsLayout } from 'fumadocs-ui/layouts/docs';
 import { baseOptions } from '@/lib/layout.shared';
 import { notFound } from 'next/navigation';
 import { ReactNode } from 'react';
-import { SidebarBanner } from '@/components/sidebar-banner';
+import { SidebarBanner } from '@/components/sidebar/sidebar-banner';
 import type { Folder } from 'fumadocs-core/page-tree';
 
 export default async function Layout(props: {
