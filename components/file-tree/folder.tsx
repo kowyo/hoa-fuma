@@ -49,7 +49,7 @@ export function Folder({
     setPrevSearchQuery(searchQuery)
     if (!searchQuery) {
       setIsOpen(defaultOpen === true || defaultOpen === "true")
-    } else if (hasMatch && !isSelfMatch) {
+    } else if (hasMatch) {
       setIsOpen(true)
     }
   }
