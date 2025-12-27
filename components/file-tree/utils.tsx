@@ -120,7 +120,7 @@ export function getFileExtension(url?: string) {
 export function getFileIcon(url?: string) {
   const ext = getFileExtension(url)
   const Icon = EXTENSION_MAP[ext] || FileIcon
-  return <Icon className="size-4" aria-hidden="true" />
+  return <Icon className="size-4 opacity-60" aria-hidden="true" />
 }
 
 export function formatBytes(bytes: number, decimals = 2): string {
