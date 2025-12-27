@@ -94,18 +94,18 @@ export function Folder({
             </div>
           )}
         </TableCell>
-        <TableCell className="py-2 font-medium">
-          <div className="flex items-center gap-2" style={{ paddingLeft: `${level * 1.5}rem` }}>
-            <span className="shrink-0">
+        <TableCell className="py-2 font-medium whitespace-normal sm:whitespace-nowrap">
+          <div className="flex items-start sm:items-center gap-2 pl-[calc(var(--level)*var(--file-tree-indent-mobile))] sm:pl-[calc(var(--level)*var(--file-tree-indent-desktop))]" style={{ '--level': level } as React.CSSProperties}>
+            <span className="shrink-0 mt-0.5 sm:mt-0">
               {isOpen ? <FolderOpen className="size-4 opacity-60" /> : <FolderIcon className="size-4 opacity-60" />}
             </span>
-            <span className="truncate">{name}</span>
+            <span className="break-words sm:break-normal sm:truncate">{name}</span>
           </div>
         </TableCell>
-        <TableCell className="text-muted-foreground py-2">
+        <TableCell className="text-muted-foreground py-2 hidden sm:table-cell">
           {size ? formatBytes(size) : "-"}
         </TableCell>
-        <TableCell className="text-muted-foreground py-2">
+        <TableCell className="text-muted-foreground py-2 hidden sm:table-cell">
           {date}
         </TableCell>
         <TableCell className="py-2 text-right" />

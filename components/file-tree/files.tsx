@@ -94,14 +94,14 @@ export function Files({ children, className, url }: { children: ReactNode, class
   return (
     <div className={cn("flex flex-col gap-4 w-full not-prose", className)}>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="搜索"
-              className="bg-background ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-56 rounded-md border px-7 text-[13px] outline-none focus-visible:ring-2"
+              className="bg-background ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-full sm:w-56 rounded-md border px-7 outline-none focus-visible:ring-2"
               aria-label="Search files"
             />
             <SearchIcon
@@ -111,55 +111,53 @@ export function Files({ children, className, url }: { children: ReactNode, class
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          <div className={cn(
-            "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border",
-            isAccelerated 
-              ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
-              : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
-          )}>
-            <ZapIcon className="size-4" />
-            <Label 
-              htmlFor="accelerate-mode" 
-              className="text-[13px] font-medium cursor-pointer whitespace-nowrap"
-            >
-              校园网加速
-            </Label>
-            <Switch
-              id="accelerate-mode"
-              checked={isAccelerated}
-              onCheckedChange={setIsAccelerated}
-              className="scale-75 data-[state=checked]:bg-blue-600"
-            />
-          </div>
+        <div className={cn(
+          "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border",
+          isAccelerated 
+            ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
+            : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
+        )}>
+          <ZapIcon className="size-4" />
+          <Label 
+            htmlFor="accelerate-mode" 
+            className="font-medium cursor-pointer whitespace-nowrap"
+          >
+            校园网加速
+          </Label>
+          <Switch
+            id="accelerate-mode"
+            checked={isAccelerated}
+            onCheckedChange={setIsAccelerated}
+            className="scale-75 data-[state=checked]:bg-blue-600"
+          />
+        </div>
 
-          <div className="hidden sm:flex gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="h-8 px-3"
-            >
-              <UploadCloudIcon className="size-4 text-muted-foreground" />
-              <span className="text-[13px]">上传文件</span>
-            </Button>
-          </div>
+        <div className="flex flex-wrap items-center gap-2 ml-auto">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="h-8 px-2 sm:px-3"
+          >
+            <UploadCloudIcon className="size-4 text-muted-foreground" />
+            <span className="hidden sm:inline">上传文件</span>
+          </Button>
 
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3"
+            className="h-8 px-2 sm:px-3"
             asChild
           >
             <a href={url} target="_blank" rel="noopener noreferrer">
               <HardDrive className="size-4 text-muted-foreground" />
-              <span className="text-[13px]">网盘计划</span>
+              <span className="hidden sm:inline">网盘计划</span>
             </a>
           </Button>
           
           <Button
             variant="outline"
             size="sm"
-            className="h-8 px-3"
+            className="h-8 px-2 sm:px-3"
             disabled={selected.size === 0 || isDownloading}
             onClick={handleBatchDownload}
           >
@@ -168,7 +166,7 @@ export function Files({ children, className, url }: { children: ReactNode, class
             ) : (
               <DownloadIcon className="size-4 text-muted-foreground" />
             )}
-            <span className="text-[13px]">批量下载</span>
+            <span className="hidden sm:inline">批量下载</span>
           </Button>
         </div>
       </div>
@@ -190,12 +188,12 @@ export function Files({ children, className, url }: { children: ReactNode, class
                 </div>
               </TableHead>
               <TableHead className="h-9 py-2">文件名</TableHead>
-              <TableHead className="h-9 py-2">文件大小</TableHead>
-              <TableHead className="h-9 py-2">最后修改日期</TableHead>
-              <TableHead className="h-9 w-0 py-2 text-right">操作</TableHead>
+              <TableHead className="h-9 py-2 hidden sm:table-cell">文件大小</TableHead>
+              <TableHead className="h-9 py-2 hidden sm:table-cell">最后修改日期</TableHead>
+              <TableHead className="h-9 w-0 py-2 text-right"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody className="text-[13px]">
+          <TableBody>
             <FileTreeContext.Provider value={{ 
               level: 0, 
               path: "", 

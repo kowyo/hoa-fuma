@@ -51,6 +51,12 @@
   --radius: 0.625rem;
 }
 
+/* File tree indent multipliers */
+:root {
+  --file-tree-indent-mobile: 0.5rem;
+  --file-tree-indent-desktop: 1rem;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);

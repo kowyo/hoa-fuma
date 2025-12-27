@@ -55,7 +55,7 @@ export function File({
 
   return (
     <TableRow 
-      className="hover:bg-muted/50 h-12"
+      className="hover:bg-muted/50 min-h-12"
       data-selected={isSelected || undefined}
     >
       <TableCell className="w-10 py-2">
@@ -71,18 +71,16 @@ export function File({
           </div>
         )}
       </TableCell>
-      <TableCell className="py-2 font-medium">
-        <div className="flex items-center gap-2" style={{ paddingLeft: `${level * 1.5}rem` }}>
-          <span className="shrink-0">{getFileIcon(url)}</span>
-          <div className="flex flex-col min-w-0 leading-tight">
-            <span>{name}</span>
-          </div>
+      <TableCell className="py-2 font-medium whitespace-normal sm:whitespace-nowrap">
+        <div className="flex items-start sm:items-center gap-2 pl-[calc(var(--level)*var(--file-tree-indent-mobile))] sm:pl-[calc(var(--level)*var(--file-tree-indent-desktop))]" style={{ '--level': level } as React.CSSProperties}>
+          <span className="shrink-0 mt-0.5 sm:mt-0">{getFileIcon(url)}</span>
+          <span className="break-words sm:break-normal">{name}</span>
         </div>
       </TableCell>
-      <TableCell className="text-muted-foreground py-2">
+      <TableCell className="text-muted-foreground py-2 hidden sm:table-cell">
         {size ? formatBytes(size) : "-"}
       </TableCell>
-      <TableCell className="text-muted-foreground py-2">
+      <TableCell className="text-muted-foreground py-2 hidden sm:table-cell">
         {type ? type.toUpperCase() : date}
       </TableCell>
       <TableCell className="py-2 text-right whitespace-nowrap">
@@ -102,6 +100,7 @@ export function File({
               size="icon-sm" 
               onClick={handleDownload}
               disabled={isDownloading}
+              className="hidden sm:inline-flex"
             >
               {isDownloading ? (
                 <CircularProgress progress={progress} className="size-4" />
