@@ -49,10 +49,8 @@
   --input: oklch(0.922 0 0);
   --ring: oklch(0.87 0 0);
   --radius: 0.625rem;
-}
 
-/* File tree indent multipliers */
-:root {
+  /* File tree indent multipliers */
   --file-tree-indent-mobile: 0.5rem;
   --file-tree-indent-desktop: 1rem;
 }
