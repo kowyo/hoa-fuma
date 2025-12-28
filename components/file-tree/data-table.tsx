@@ -22,7 +22,6 @@ import {
 import { Button } from "@/components/ui/button"
 import { CircularProgress } from "@/components/ui/circular-progress"
 import { Switch } from "@/components/ui/switch"
-import { Label } from "@/components/ui/label"
 import { 
   SearchIcon, 
   UploadCloudIcon, 
@@ -190,24 +189,24 @@ export function DataTable({ data, className, url }: DataTableProps) {
         </div>
 
         {/* Acceleration Mode - Left on desktop */}
-        <div className={cn(
-          "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1",
-          isAccelerated 
-            ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
-            : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
-        )}>
+        <div 
+          className={cn(
+            "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1 cursor-pointer select-none",
+            isAccelerated 
+              ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
+              : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
+          )}
+          onClick={() => setIsAccelerated(!isAccelerated)}
+        >
           <ZapIcon className="size-4" />
-          <Label 
-            htmlFor="accelerate-mode" 
-            className="font-medium cursor-pointer whitespace-nowrap"
-          >
+          <span className="text-sm font-medium whitespace-nowrap">
             校园网加速
-          </Label>
+          </span>
           <Switch
-            id="accelerate-mode"
             checked={isAccelerated}
             onCheckedChange={setIsAccelerated}
             className="scale-75 data-[state=checked]:bg-blue-600"
+            onClick={(e) => e.stopPropagation()}
           />
         </div>
 
