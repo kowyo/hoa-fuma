@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState, useEffect } from "react"
+import { useMemo, useState, useEffect, useRef } from "react"
 import {
   ColumnFiltersState,
   ExpandedState,
@@ -66,6 +66,7 @@ export function DataTable({ data, className, url }: DataTableProps) {
   const [isAccelerated, setIsAccelerated] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
+  const prevFilterRef = useRef(globalFilter)
 
   // Memoize columns with current acceleration state
   const columns = useMemo(
@@ -98,7 +99,11 @@ export function DataTable({ data, className, url }: DataTableProps) {
       }
       expandMatching(data)
       setExpanded(newExpanded)
+    } else if (prevFilterRef.current !== "") {
+      // Clear all expanded folders when search is cleared
+      setExpanded({})
     }
+    prevFilterRef.current = globalFilter
   }, [globalFilter, data])
 
   const table = useReactTable({
