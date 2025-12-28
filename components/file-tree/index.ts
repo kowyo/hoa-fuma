@@ -1,3 +1,3 @@
-export * from "./files"
-export * from "./folder"
-export * from "./file"
+export { Files, Folder, File } from "./files"
+export { DataTable } from "./data-table"
+export type { FileNode } from "./types"

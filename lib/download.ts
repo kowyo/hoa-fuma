@@ -54,7 +54,7 @@ export async function downloadSingleFile(
     }
   }
 
-  const blob = new Blob(chunks);
+  const blob = new Blob(chunks as BlobPart[]);
   triggerDownload(blob, name);
 }
 
@@ -106,6 +106,6 @@ export async function downloadBatchFiles(
   });
 
   onProgress?.(100);
-  const blob = new Blob([content], { type: "application/zip" });
+  const blob = new Blob([content as BlobPart], { type: "application/zip" });
   triggerDownload(blob, `batch-download-${Date.now()}.zip`);
 }
