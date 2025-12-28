@@ -1,6 +1,7 @@
 "use client"
 
 import { TableCell, TableRow } from "@/components/ui/table"
+import { Checkbox } from "@/components/ui/checkbox"
 import { Folder as FolderIcon, FolderOpen } from "lucide-react"
 import { useState, ReactNode, useMemo } from "react"
 import { FileTreeContext, useFileTree } from "./ctx"
@@ -58,9 +59,8 @@ export function Folder({
     return null
   }
   
-  const handleSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.stopPropagation()
-    selectBatch([fullPath, ...allIds], e.target.checked)
+  const handleSelect = (checked: boolean | "indeterminate") => {
+    selectBatch([fullPath, ...allIds], !!checked)
   }
 
   return (
@@ -83,11 +83,9 @@ export function Folder({
         <TableCell className="w-10 py-2">
           {isSelectable && (
             <div className="flex items-center">
-              <input
-                type="checkbox"
-                className="accent-foreground size-3.5"
+              <Checkbox
                 checked={isSelected}
-                onChange={handleSelect}
+                onCheckedChange={handleSelect}
                 onClick={(e) => e.stopPropagation()}
                 aria-label={`Select ${name}`}
               />

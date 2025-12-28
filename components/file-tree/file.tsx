@@ -1,6 +1,7 @@
 "use client"
 
 import { TableCell, TableRow } from "@/components/ui/table"
+import { Checkbox } from "@/components/ui/checkbox"
 import { useFileTree } from "./ctx"
 import { getFileIcon, formatBytes, getAcceleratedUrl, getFileExtension } from "./utils"
 import { ExternalLinkIcon, DownloadIcon } from "lucide-react"
@@ -61,11 +62,9 @@ export function File({
       <TableCell className="w-10 py-2">
         {isSelectable && (
           <div className="flex items-center">
-            <input
-              type="checkbox"
-              className="accent-foreground size-3.5"
+            <Checkbox
               checked={isSelected}
-              onChange={() => toggleSelect(fullPath)}
+              onCheckedChange={() => toggleSelect(fullPath)}
               aria-label={`Select ${name}`}
             />
           </div>
