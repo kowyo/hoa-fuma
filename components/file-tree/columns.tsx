@@ -5,7 +5,6 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import { CircularProgress } from "@/components/ui/circular-progress"
 import { 
-  ChevronRight, 
   ExternalLinkIcon, 
   DownloadIcon,
   Folder,
@@ -30,7 +29,6 @@ function NameCell({
 }) {
   const node = row.original
   const isFolder = node.type === "folder"
-  const canExpand = row.getCanExpand()
   const isExpanded = row.getIsExpanded()
 
   return (
@@ -46,11 +44,6 @@ function NameCell({
           }}
           className="shrink-0 mt-0.5 sm:mt-0 flex items-center"
         >
-          {canExpand && (
-            <ChevronRight 
-              className={`size-4 opacity-60 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
-            />
-          )}
           {isExpanded ? (
             <FolderOpen className="size-4 opacity-60" />
           ) : (

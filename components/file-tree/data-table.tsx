@@ -275,7 +275,9 @@ export function DataTable({ data, className, url }: DataTableProps) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={row.original.type === "folder" ? "cursor-pointer" : undefined}
+                  className={cn(
+                    row.original.type === "folder" && "cursor-pointer h-12"
+                  )}
                   onClick={row.original.type === "folder" ? () => row.toggleExpanded() : undefined}
                 >
                   {row.getVisibleCells().map((cell) => {
