@@ -70,27 +70,23 @@ export async function downloadBatchFiles(
 
   await Promise.all(
     files.map(async (file) => {
-      try {
-        const response = await fetch(file.url);
-        if (!response.ok) throw new Error(`Failed to fetch ${file.url}`);
-        
-        const buffer = await response.arrayBuffer();
-        
-        // Ensure extension is preserved if missing in path but present in URL
-        let zipPath = file.path;
-        const urlPath = file.url.split(/[?#]/)[0];
-        const extMatch = urlPath.match(/\.[a-z0-9]+$/i);
-        
-        if (extMatch && !zipPath.toLowerCase().endsWith(extMatch[0].toLowerCase())) {
-          zipPath += extMatch[0];
-        }
-
-        zippable[zipPath] = new Uint8Array(buffer);
-        completed++;
-        onProgress?.(Math.round((completed / files.length) * 90));
-      } catch (err) {
-        console.warn(`Skipping file ${file.path} due to error:`, err);
+      const response = await fetch(file.url);
+      if (!response.ok) throw new Error(`Failed to fetch ${file.url}: ${response.statusText}`);
+      
+      const buffer = await response.arrayBuffer();
+      
+      // Ensure extension is preserved if missing in path but present in URL
+      let zipPath = file.path;
+      const urlPath = file.url.split(/[?#]/)[0];
+      const extMatch = urlPath.match(/\.[a-z0-9]+$/i);
+      
+      if (extMatch && !zipPath.toLowerCase().endsWith(extMatch[0].toLowerCase())) {
+        zipPath += extMatch[0];
       }
+
+      zippable[zipPath] = new Uint8Array(buffer);
+      completed++;
+      onProgress?.(Math.round((completed / files.length) * 90));
     })
   );
 
