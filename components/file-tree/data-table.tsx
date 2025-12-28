@@ -77,34 +77,22 @@ export function DataTable({ data, className, url }: DataTableProps) {
   useEffect(() => {
     if (globalFilter) {
       const newExpanded: Record<string, boolean> = {}
-      function expandMatching(nodes: FileNode[], parentPath: string = "") {
+      const query = globalFilter.toLowerCase()
+      
+      function expandMatching(nodes: FileNode[]) {
         for (const node of nodes) {
-          const matchesSelf = node.name.toLowerCase().includes(globalFilter.toLowerCase())
-          let hasMatchingChild = false
-          
-          if (node.children) {
-            for (const child of node.children) {
-              if (child.name.toLowerCase().includes(globalFilter.toLowerCase())) {
-                hasMatchingChild = true
-                break
-              }
-              if (child.children) {
-                // Deep check
-                const flatChildren = flattenNodes([child])
-                if (flatChildren.some(n => n.name.toLowerCase().includes(globalFilter.toLowerCase()))) {
-                  hasMatchingChild = true
-                  break
-                }
-              }
-            }
-          }
+          const matchesSelf = node.name.toLowerCase().includes(query)
+          const hasMatchingChild = node.children?.some(child => 
+            child.name.toLowerCase().includes(query) ||
+            (child.children && flattenNodes([child]).some(n => n.name.toLowerCase().includes(query)))
+          )
           
           if (node.type === "folder" && (matchesSelf || hasMatchingChild)) {
             newExpanded[node.id] = true
           }
           
           if (node.children) {
-            expandMatching(node.children, node.id)
+            expandMatching(node.children)
           }
         }
       }
@@ -287,15 +275,8 @@ export function DataTable({ data, className, url }: DataTableProps) {
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
-                  className={cn(
-                    "hover:bg-muted/50 min-h-12",
-                    row.original.type === "folder" && "cursor-pointer"
-                  )}
-                  onClick={() => {
-                    if (row.original.type === "folder") {
-                      row.toggleExpanded()
-                    }
-                  }}
+                  className={row.original.type === "folder" ? "cursor-pointer" : undefined}
+                  onClick={row.original.type === "folder" ? () => row.toggleExpanded() : undefined}
                 >
                   {row.getVisibleCells().map((cell) => {
                     const meta = cell.column.columnDef.meta as { className?: string } | undefined

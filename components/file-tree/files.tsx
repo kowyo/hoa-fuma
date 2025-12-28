@@ -1,7 +1,6 @@
 "use client"
 
 import { ReactNode, useMemo } from "react"
-import { cn } from "@/lib/utils"
 import { transformChildrenToData } from "./types"
 import { DataTable } from "./data-table"
 
@@ -25,19 +24,12 @@ export interface FilesProps {
  * ```
  */
 export function Files({ children, className, url }: FilesProps) {
-  // Transform React children to data array
   const data = useMemo(
     () => transformChildrenToData(children),
     [children]
   )
 
-  return (
-    <DataTable 
-      data={data} 
-      className={cn(className)} 
-      url={url}
-    />
-  )
+  return <DataTable data={data} className={className} url={url} />
 }
 
 /**

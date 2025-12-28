@@ -14,7 +14,7 @@ import {
 import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
-import { FileNode, getDescendantIds } from "./types"
+import { FileNode } from "./types"
 import { getFileIcon, formatBytes, getAcceleratedUrl } from "./utils"
 import { downloadSingleFile } from "@/lib/download"
 
@@ -130,39 +130,15 @@ function ActionsCell({
   )
 }
 
-// Checkbox cell that handles folder batch selection
-function SelectCell({ 
-  row, 
-}: { 
-  row: Row<FileNode>
-}) {
-  const node = row.original
-  const isFolder = node.type === "folder"
-
-  const handleCheckedChange = (checked: boolean | "indeterminate") => {
-    if (isFolder && node.children) {
-      // For folders, also select/deselect all descendants
-      const descendantIds = getDescendantIds(node)
-      const table = row.getParentRows()[0]?.getParentRow() // Get table reference
-      
-      // Toggle self
-      row.toggleSelected(!!checked)
-      
-      // Toggle all descendants by finding their rows
-      // Note: TanStack handles this through getSubRows if configured properly
-    }
-    row.toggleSelected(!!checked)
-  }
-
+// Checkbox cell for row selection
+function SelectCell({ row }: { row: Row<FileNode> }) {
   return (
-    <div className="flex items-center">
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={handleCheckedChange}
-        onClick={(e) => e.stopPropagation()}
-        aria-label={`Select ${node.name}`}
-      />
-    </div>
+    <Checkbox
+      checked={row.getIsSelected()}
+      onCheckedChange={(checked) => row.toggleSelected(!!checked)}
+      onClick={(e) => e.stopPropagation()}
+      aria-label={`Select ${row.original.name}`}
+    />
   )
 }
 
@@ -171,16 +147,14 @@ export function createColumns(options: ColumnOptions): ColumnDef<FileNode>[] {
     {
       id: "select",
       header: ({ table }) => (
-        <div className="flex items-center">
-          <Checkbox
-            checked={
-              table.getIsAllPageRowsSelected() ||
-              (table.getIsSomePageRowsSelected() && "indeterminate")
-            }
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-          />
-        </div>
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
       ),
       cell: ({ row }) => <SelectCell row={row} />,
       enableSorting: false,

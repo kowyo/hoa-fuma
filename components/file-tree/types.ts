@@ -111,21 +111,3 @@ export function getFileNodes(nodes: FileNode[]): FileNode[] {
   return flattenNodes(nodes).filter(node => node.type === "file" && node.url)
 }
 
-/**
- * Gets all descendant IDs of a node (for batch selection).
- */
-export function getDescendantIds(node: FileNode): string[] {
-  const ids: string[] = []
-  
-  function traverse(items: FileNode[] | undefined) {
-    if (!items) return
-    for (const item of items) {
-      ids.push(item.id)
-      traverse(item.children)
-    }
-  }
-  
-  traverse(node.children)
-  return ids
-}
-
