@@ -171,14 +171,15 @@ export function DataTable({ data, className, url }: DataTableProps) {
     <div className={cn("flex flex-col gap-4 w-full not-prose", className)}>
       {/* Toolbar */}
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2 w-full sm:w-auto">
-          <div className="relative flex-1 sm:flex-none">
+        {/* Search Box - Top on mobile, Middle on desktop */}
+        <div className="flex items-center gap-2 w-full sm:w-auto sm:flex-1 sm:max-w-md sm:order-2 sm:mx-auto">
+          <div className="relative w-full">
             <input
               type="text"
               value={globalFilter}
               onChange={(e) => setGlobalFilter(e.target.value)}
               placeholder="搜索"
-              className="bg-background ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-full sm:w-56 rounded-md border px-7 outline-none focus-visible:ring-2"
+              className="bg-background ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-full rounded-md border px-7 outline-none focus-visible:ring-2"
               aria-label="Search files"
             />
             <SearchIcon
@@ -188,8 +189,9 @@ export function DataTable({ data, className, url }: DataTableProps) {
           </div>
         </div>
 
+        {/* Acceleration Mode - Left on desktop */}
         <div className={cn(
-          "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border",
+          "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1",
           isAccelerated 
             ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
             : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
@@ -209,7 +211,8 @@ export function DataTable({ data, className, url }: DataTableProps) {
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2 ml-auto">
+        {/* Action Buttons - Right on desktop */}
+        <div className="flex flex-wrap items-center gap-2 sm:order-3">
           <Button 
             variant="outline" 
             size="sm"
