@@ -189,7 +189,7 @@ export function createColumns(options: ColumnOptions): ColumnDef<FileNode>[] {
         const node = row.original
         return (
           <span className="text-muted-foreground">
-            {node.fileType ? node.fileType.toUpperCase() : (node.date || "-")}
+            {node.date || "-"}
           </span>
         )
       },
