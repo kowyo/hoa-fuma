@@ -38,18 +38,18 @@ export function Toolbar({
   return (
     <div className="flex flex-wrap items-center justify-between gap-3">
       {/* Search Box - Top on mobile, Middle on desktop */}
-      <div className="flex items-center gap-2 w-full sm:w-auto sm:flex-1 sm:max-w-md sm:order-2 sm:mx-auto">
+      <div className="flex w-full items-center gap-2 sm:order-2 sm:mx-auto sm:w-auto sm:max-w-md sm:flex-1">
         <div className="relative w-full">
           <input
             type="text"
             value={globalFilter}
             onChange={(e) => setGlobalFilter(e.target.value)}
             placeholder="搜索"
-            className="bg-background text-sm ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-full rounded-md border px-7 outline-none focus-visible:ring-2"
+            className="bg-background ring-offset-background focus-visible:ring-ring placeholder:text-muted-foreground h-8 w-full rounded-md border px-7 text-sm outline-none focus-visible:ring-2"
             aria-label="Search files"
           />
           <SearchIcon
-            className="text-muted-foreground pointer-events-none absolute left-2 top-1/2 size-3 -translate-y-1/2 opacity-70"
+            className="text-muted-foreground pointer-events-none absolute top-1/2 left-2 size-3 -translate-y-1/2 opacity-70"
             aria-hidden="true"
           />
         </div>
@@ -58,9 +58,9 @@ export function Toolbar({
       {/* Acceleration Mode - Left on desktop */}
       <div
         className={cn(
-          'flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1 cursor-pointer select-none',
+          'flex h-8 cursor-pointer items-center gap-2 rounded-md border px-2.5 transition-all select-none sm:order-1',
           isAccelerated
-            ? 'bg-blue-500/5 border-blue-500/20 text-blue-600'
+            ? 'border-blue-500/20 bg-blue-500/5 text-blue-600'
             : 'border-input text-muted-foreground bg-muted/50 hover:bg-background'
         )}
         onClick={() => setIsAccelerated(!isAccelerated)}
@@ -80,7 +80,7 @@ export function Toolbar({
       {/* Action Buttons - Right on desktop */}
       <div className="flex flex-wrap items-center gap-2 sm:order-3">
         <Button variant="outline" size="sm" className="h-8 px-2 sm:px-3">
-          <UploadCloudIcon className="size-4 text-muted-foreground" />
+          <UploadCloudIcon className="text-muted-foreground size-4" />
           <span className="hidden sm:inline">上传文件</span>
         </Button>
 
@@ -91,7 +91,7 @@ export function Toolbar({
           asChild
         >
           <a href={url} target="_blank" rel="noopener noreferrer">
-            <HardDrive className="size-4 text-muted-foreground" />
+            <HardDrive className="text-muted-foreground size-4" />
             <span className="hidden sm:inline">网盘计划</span>
           </a>
         </Button>
@@ -106,7 +106,7 @@ export function Toolbar({
           {isDownloading ? (
             <CircularProgress progress={downloadProgress} />
           ) : (
-            <DownloadIcon className="size-4 text-muted-foreground" />
+            <DownloadIcon className="text-muted-foreground size-4" />
           )}
           <span className="hidden sm:inline">批量下载</span>
         </Button>

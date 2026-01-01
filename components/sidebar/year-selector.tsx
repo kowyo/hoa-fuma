@@ -20,15 +20,15 @@ export function YearSelector({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger className="flex items-center gap-2 rounded-lg p-2 border bg-fd-secondary/50 text-start text-fd-secondary-foreground transition-colors hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground">
+      <PopoverTrigger className="bg-fd-secondary/50 text-fd-secondary-foreground hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground flex items-center gap-2 rounded-lg border p-2 text-start transition-colors">
         <span className="text-sm font-medium">{currentYear}</span>
-        <ChevronsUpDown className="shrink-0 ms-auto size-4 text-fd-muted-foreground" />
+        <ChevronsUpDown className="text-fd-muted-foreground ms-auto size-4 shrink-0" />
       </PopoverTrigger>
-      <PopoverContent className="flex flex-col gap-1 w-(--radix-popover-trigger-width) p-1 fd-scroll-container">
+      <PopoverContent className="fd-scroll-container flex w-(--radix-popover-trigger-width) flex-col gap-1 p-1">
         {years.map((year) => (
           <Link
             key={year}
-            className="flex items-center gap-2 rounded-lg p-1.5 hover:bg-fd-accent hover:text-fd-accent-foreground"
+            className="hover:bg-fd-accent hover:text-fd-accent-foreground flex items-center gap-2 rounded-lg p-1.5"
             href={`/docs/${year}`}
             onClick={() => {
               setOpen(false);
@@ -36,7 +36,7 @@ export function YearSelector({
           >
             <span className="text-sm font-medium">{year}</span>
             <Check
-              className={`shrink-0 ms-auto size-3.5 text-fd-primary ${year !== currentYear ? 'invisible' : ''}`}
+              className={`text-fd-primary ms-auto size-3.5 shrink-0 ${year !== currentYear ? 'invisible' : ''}`}
             />
           </Link>
         ))}

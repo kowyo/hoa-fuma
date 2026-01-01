@@ -27,7 +27,7 @@ export function SidebarBanner({
   }, [tree, currentYear]);
 
   return (
-    <div className="flex flex-col gap-2 mt-2">
+    <div className="mt-2 flex flex-col gap-2">
       <YearSelector years={years} currentYear={currentYear} />
       <SidebarTabsDropdown options={tabs} />
     </div>

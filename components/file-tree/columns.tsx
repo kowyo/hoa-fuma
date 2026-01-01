@@ -29,7 +29,7 @@ function NameCell({ row }: { row: Row<FileNode> }) {
 
   return (
     <div
-      className="flex items-start sm:items-center gap-2 pl-[calc(var(--depth)*var(--file-tree-indent-mobile))] sm:pl-[calc(var(--depth)*var(--file-tree-indent-desktop))]"
+      className="flex items-start gap-2 pl-[calc(var(--depth)*var(--file-tree-indent-mobile))] sm:items-center sm:pl-[calc(var(--depth)*var(--file-tree-indent-desktop))]"
       style={{ '--depth': node.depth } as React.CSSProperties}
     >
       {isFolder ? (
@@ -38,7 +38,7 @@ function NameCell({ row }: { row: Row<FileNode> }) {
             e.stopPropagation();
             row.toggleExpanded();
           }}
-          className="shrink-0 mt-1 sm:mt-0 flex items-center"
+          className="mt-1 flex shrink-0 items-center sm:mt-0"
         >
           {isExpanded ? (
             <FolderOpen className="size-4 opacity-60" />
@@ -47,9 +47,9 @@ function NameCell({ row }: { row: Row<FileNode> }) {
           )}
         </button>
       ) : (
-        <span className="shrink-0 mt-1 sm:mt-0">{getFileIcon(node.url)}</span>
+        <span className="mt-1 shrink-0 sm:mt-0">{getFileIcon(node.url)}</span>
       )}
-      <span className="flex-1 text-wrap break-normal min-w-0">{node.name}</span>
+      <span className="min-w-0 flex-1 text-wrap break-normal">{node.name}</span>
     </div>
   );
 }

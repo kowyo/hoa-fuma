@@ -166,7 +166,7 @@ export function FileTreeTable({ data, className, url }: FileTreeTableProps) {
   };
 
   return (
-    <div className={cn('flex flex-col gap-4 w-full not-prose', className)}>
+    <div className={cn('not-prose flex w-full flex-col gap-4', className)}>
       <Toolbar
         globalFilter={globalFilter}
         setGlobalFilter={setGlobalFilter}
@@ -222,7 +222,7 @@ export function FileTreeTable({ data, className, url }: FileTreeTableProps) {
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
                   className={cn(
-                    row.original.type === 'folder' && 'cursor-pointer h-12'
+                    row.original.type === 'folder' && 'h-12 cursor-pointer'
                   )}
                   onClick={
                     row.original.type === 'folder'
@@ -252,7 +252,7 @@ export function FileTreeTable({ data, className, url }: FileTreeTableProps) {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-muted-foreground"
+                  className="text-muted-foreground h-24 text-center"
                 >
                   未找到相关文件
                 </TableCell>
