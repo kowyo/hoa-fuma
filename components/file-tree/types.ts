@@ -1,4 +1,4 @@
-import { Children, isValidElement, ReactElement, ReactNode } from "react"
+import { ReactNode } from "react"
 
 export interface FileNode {
   id: string           // Full path as unique ID
@@ -13,7 +13,7 @@ export interface FileNode {
   defaultOpen?: boolean
 }
 
-interface FileProps {
+export interface FileProps {
   name: string
   url?: string
   size?: number
@@ -21,7 +21,7 @@ interface FileProps {
   type?: string
 }
 
-interface FolderProps {
+export interface FolderProps {
   name: string
   children?: ReactNode
   defaultOpen?: boolean | string
@@ -29,85 +29,8 @@ interface FolderProps {
   size?: number
 }
 
-/**
- * Transforms React children (declarative MDX structure) into a flat array of FileNode objects.
- * This allows TanStack Table to handle the data with its built-in features.
- */
-export function transformChildrenToData(
-  nodes: ReactNode,
-  parentPath: string = "",
-  depth: number = 0
-): FileNode[] {
-  const result: FileNode[] = []
-
-  Children.forEach(nodes, (child) => {
-    if (!isValidElement(child)) return
-
-    const element = child as ReactElement<FileProps | FolderProps>
-    const { name } = element.props
-    if (!name) return
-
-    const fullPath = parentPath ? `${parentPath}/${name}` : name
-
-    // Check if it's a folder (has children prop that contains more nodes)
-    const children = (element.props as FolderProps).children
-    const isFolder = children !== undefined
-
-    if (isFolder) {
-      const folderProps = element.props as FolderProps
-      const childNodes = transformChildrenToData(children, fullPath, depth + 1)
-      
-      result.push({
-        id: fullPath,
-        name,
-        type: "folder",
-        depth,
-        date: folderProps.date,
-        size: folderProps.size,
-        defaultOpen: folderProps.defaultOpen === true || folderProps.defaultOpen === "true",
-        children: childNodes.length > 0 ? childNodes : undefined,
-      })
-    } else {
-      const fileProps = element.props as FileProps
-      result.push({
-        id: fullPath,
-        name,
-        type: "file",
-        url: fileProps.url,
-        size: fileProps.size,
-        date: fileProps.date,
-        fileType: fileProps.type,
-        depth,
-      })
-    }
-  })
-
-  return result
+export interface DownloadFile {
+  path: string
+  url: string
+  name: string
 }
-
-/**
- * Flattens the hierarchical FileNode tree into a single array for selection operations.
- */
-export function flattenNodes(nodes: FileNode[]): FileNode[] {
-  const result: FileNode[] = []
-  
-  function traverse(items: FileNode[]) {
-    for (const node of items) {
-      result.push(node)
-      if (node.children) {
-        traverse(node.children)
-      }
-    }
-  }
-  
-  traverse(nodes)
-  return result
-}
-
-/**
- * Gets all file nodes (non-folders) from the tree.
- */
-export function getFileNodes(nodes: FileNode[]): FileNode[] {
-  return flattenNodes(nodes).filter(node => node.type === "file" && node.url)
-}
-
