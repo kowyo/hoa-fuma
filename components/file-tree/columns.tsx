@@ -14,8 +14,8 @@ import Link from "next/link"
 import { useState } from "react"
 import { toast } from "sonner"
 import { FileNode } from "./types"
-import { getFileIcon, formatBytes, getAcceleratedUrl } from "./utils"
-import { downloadSingleFile } from "@/lib/download"
+import { getFileIcon, getAcceleratedUrl, formatBytes } from "./utils"
+import { downloadSingleFile } from "./utils"
 
 interface ColumnOptions {
   isAccelerated: boolean

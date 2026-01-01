@@ -1,8 +1,8 @@
 "use client"
 
 import { ReactNode, useMemo } from "react"
-import { transformChildrenToData } from "./types"
-import { DataTable } from "./data-table"
+import { transformChildrenToData } from "./utils"
+import { FileTreeTable } from "./table"
 
 export interface FilesProps {
   children: ReactNode
@@ -29,7 +29,7 @@ export function Files({ children, className, url }: FilesProps) {
     [children]
   )
 
-  return <DataTable data={data} className={className} url={url} />
+  return <FileTreeTable data={data} className={className} url={url} />
 }
 
 /**
