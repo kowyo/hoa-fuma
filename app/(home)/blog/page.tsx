@@ -25,10 +25,10 @@ export default function Page() {
           className="absolute inset-0 -z-1 size-full object-cover"
         />
         <h1 className="text-landing-foreground mb-4 font-mono text-3xl font-medium">
-          Fumadocs Blog
+          HOA 博客
         </h1>
         <p className="text-landing-foreground font-mono text-sm">
-          Latest announcements of Fumadocs.
+          了解校内最新资讯，分享学习心得
         </p>
       </div>
       <div className="grid grid-cols-1 gap-2 md:grid-cols-3 xl:grid-cols-4">
