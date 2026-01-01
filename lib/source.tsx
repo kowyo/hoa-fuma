@@ -1,4 +1,4 @@
-import { docs } from 'fumadocs-mdx:collections/server';
+import { docs, blog as blogDocs } from 'fumadocs-mdx:collections/server';
 import { type InferPageType, loader } from 'fumadocs-core/source';
 import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 
@@ -25,6 +25,11 @@ export async function getLLMText(page: InferPageType<typeof source>) {
 
 ${processed}`;
 }
+
+export const blog = loader({
+  baseUrl: '/blog',
+  source: blogDocs.toFumadocsSource(),
+});
 
 export function getAvailableYears(): string[] {
   return source.pageTree.children
