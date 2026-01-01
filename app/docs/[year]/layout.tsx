@@ -28,11 +28,7 @@ export default async function Layout(props: {
       sidebar={{
         tabs: false,
         banner: (
-          <SidebarBanner
-            years={years}
-            currentYear={year}
-            tree={yearNode}
-          />
+          <SidebarBanner years={years} currentYear={year} tree={yearNode} />
         ),
       }}
     >

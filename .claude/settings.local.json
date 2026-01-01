@@ -1,9 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(gh pr list:*)",
-      "Bash(gh pr view:*)",
-      "Bash(gh pr diff:*)"
-    ]
+    "allow": ["Bash(gh pr list:*)", "Bash(gh pr view:*)", "Bash(gh pr diff:*)"]
   }
 }

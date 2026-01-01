@@ -1,5 +1,5 @@
-import { Children, isValidElement, ReactElement, ReactNode } from "react"
-import { zip, type AsyncZippable } from "fflate"
+import { Children, isValidElement, ReactElement, ReactNode } from 'react';
+import { zip, type AsyncZippable } from 'fflate';
 import {
   FileArchive,
   FileIcon,
@@ -10,8 +10,8 @@ import {
   FilePlay,
   FileChartPie,
   LucideIcon,
-} from "lucide-react"
-import type { FileNode, FileProps, FolderProps, DownloadFile } from "./types"
+} from 'lucide-react';
+import type { FileNode, FileProps, FolderProps, DownloadFile } from './types';
 
 const EXTENSION_MAP: Record<string, LucideIcon> = {
   pdf: FileTextIcon,
@@ -27,7 +27,7 @@ const EXTENSION_MAP: Record<string, LucideIcon> = {
   csv: FileSpreadsheet,
   zip: FileArchive,
   rar: FileArchive,
-  "7z": FileArchive,
+  '7z': FileArchive,
   tar: FileArchive,
   gz: FileArchive,
   mp4: FilePlay,
@@ -44,41 +44,41 @@ const EXTENSION_MAP: Record<string, LucideIcon> = {
   gif: FileImage,
   webp: FileImage,
   svg: FileImage,
-}
+};
 
 export function formatBytes(bytes: number, decimals = 2): string {
-  if (bytes === 0) return "0 Bytes"
-  const k = 1024
-  const dm = Math.max(0, decimals)
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB"]
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = Math.max(0, decimals);
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
 }
 
 export function getFileExtension(url?: string) {
-  if (!url) return ""
+  if (!url) return '';
   try {
-    const urlPath = new URL(url).pathname
-    return decodeURIComponent(urlPath).split(".").pop()?.toLowerCase() || ""
+    const urlPath = new URL(url).pathname;
+    return decodeURIComponent(urlPath).split('.').pop()?.toLowerCase() || '';
   } catch {
-    return ""
+    return '';
   }
 }
 
 export function getFileIcon(url?: string) {
-  const ext = getFileExtension(url)
-  const Icon = EXTENSION_MAP[ext] || FileIcon
-  return <Icon className="size-4 opacity-60" aria-hidden="true" />
+  const ext = getFileExtension(url);
+  const Icon = EXTENSION_MAP[ext] || FileIcon;
+  return <Icon className="size-4 opacity-60" aria-hidden="true" />;
 }
 
 export function getAcceleratedUrl(url: string) {
-  if (!url) return url
-  const isExcluded = /\.(docx|pptx|xlsx)$/i.test(url)
-  if (isExcluded) return url
+  if (!url) return url;
+  const isExcluded = /\.(docx|pptx|xlsx)$/i.test(url);
+  if (isExcluded) return url;
 
   return url
-    .replace("gh.hoa.moe/github.com", "gitea.osa.moe")
-    .replace("/raw/", "/raw/branch/")
+    .replace('gh.hoa.moe/github.com', 'gitea.osa.moe')
+    .replace('/raw/', '/raw/branch/');
 }
 
 /**
@@ -86,80 +86,82 @@ export function getAcceleratedUrl(url: string) {
  */
 export function transformChildrenToData(
   nodes: ReactNode,
-  parentPath: string = "",
+  parentPath: string = '',
   depth: number = 0
 ): FileNode[] {
-  const result: FileNode[] = []
+  const result: FileNode[] = [];
 
   Children.forEach(nodes, (child) => {
-    if (!isValidElement(child)) return
+    if (!isValidElement(child)) return;
 
-    const element = child as ReactElement<FileProps | FolderProps>
-    const { name } = element.props
-    if (!name) return
+    const element = child as ReactElement<FileProps | FolderProps>;
+    const { name } = element.props;
+    if (!name) return;
 
-    const fullPath = parentPath ? `${parentPath}/${name}` : name
+    const fullPath = parentPath ? `${parentPath}/${name}` : name;
 
     // Check if it's a folder (has children prop that contains more nodes)
-    const children = (element.props as FolderProps).children
-    const isFolder = children !== undefined
+    const children = (element.props as FolderProps).children;
+    const isFolder = children !== undefined;
 
     if (isFolder) {
-      const folderProps = element.props as FolderProps
-      const childNodes = transformChildrenToData(children, fullPath, depth + 1)
-      
+      const folderProps = element.props as FolderProps;
+      const childNodes = transformChildrenToData(children, fullPath, depth + 1);
+
       result.push({
         id: fullPath,
         name,
-        type: "folder",
+        type: 'folder',
         depth,
         date: folderProps.date,
         size: folderProps.size,
-        defaultOpen: folderProps.defaultOpen === true || folderProps.defaultOpen === "true",
+        defaultOpen:
+          folderProps.defaultOpen === true ||
+          folderProps.defaultOpen === 'true',
         children: childNodes.length > 0 ? childNodes : undefined,
-      })
+      });
     } else {
-      const fileProps = element.props as FileProps
+      const fileProps = element.props as FileProps;
       result.push({
         id: fullPath,
         name,
-        type: "file",
+        type: 'file',
         url: fileProps.url,
         size: fileProps.size,
         date: fileProps.date,
         fileType: fileProps.type,
         depth,
-      })
+      });
     }
-  })
+  });
 
-  return result
+  return result;
 }
 
 /**
  * Flattens the hierarchical FileNode tree into a single array.
  */
 export function flattenNodes(nodes: FileNode[]): FileNode[] {
-  const result: FileNode[] = []
-  
+  const result: FileNode[] = [];
+
   function traverse(items: FileNode[]) {
     for (const node of items) {
-      result.push(node)
+      result.push(node);
       if (node.children) {
-        traverse(node.children)
+        traverse(node.children);
       }
     }
   }
-  
-  traverse(nodes)
-  return result
+
+  traverse(nodes);
+  return result;
 }
 
 /**
  * Gets all file nodes (non-folders) from the tree.
  */
 export function getFileNodes(nodes: FileNode[]): FileNode[] {
-  return flattenNodes(nodes).filter(node => node.type === "file" && node.url)
+  return flattenNodes(nodes).filter((node) => node.type === 'file' && node.url);
 }
 
 /**
@@ -167,7 +169,7 @@ export function getFileNodes(nodes: FileNode[]): FileNode[] {
  */
 function triggerDownload(blob: Blob, filename: string) {
   const url = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
+  const link = document.createElement('a');
   link.href = url;
   link.download = filename;
   document.body.appendChild(link);
@@ -187,7 +189,7 @@ export async function downloadSingleFile(
   const response = await fetch(url);
   if (!response.ok) throw new Error(`Download failed: ${response.statusText}`);
 
-  const contentLength = response.headers.get("content-length");
+  const contentLength = response.headers.get('content-length');
   const total = contentLength ? parseInt(contentLength, 10) : 0;
 
   if (total === 0 || !response.body) {
@@ -228,16 +230,20 @@ export async function downloadBatchFiles(
   await Promise.all(
     files.map(async (file) => {
       const response = await fetch(file.url);
-      if (!response.ok) throw new Error(`Failed to fetch ${file.url}: ${response.statusText}`);
-      
+      if (!response.ok)
+        throw new Error(`Failed to fetch ${file.url}: ${response.statusText}`);
+
       const buffer = await response.arrayBuffer();
-      
+
       // Ensure extension is preserved if missing in path but present in URL
       let zipPath = file.path;
       const urlPath = file.url.split(/[?#]/)[0];
       const extMatch = urlPath.match(/\.[a-z0-9]+$/i);
-      
-      if (extMatch && !zipPath.toLowerCase().endsWith(extMatch[0].toLowerCase())) {
+
+      if (
+        extMatch &&
+        !zipPath.toLowerCase().endsWith(extMatch[0].toLowerCase())
+      ) {
         zipPath += extMatch[0];
       }
 
@@ -248,7 +254,7 @@ export async function downloadBatchFiles(
   );
 
   if (Object.keys(zippable).length === 0) {
-    throw new Error("No files were successfully downloaded");
+    throw new Error('No files were successfully downloaded');
   }
 
   const content = await new Promise<Uint8Array>((resolve, reject) => {
@@ -259,6 +265,6 @@ export async function downloadBatchFiles(
   });
 
   onProgress?.(100);
-  const blob = new Blob([content as BlobPart], { type: "application/zip" });
+  const blob = new Blob([content as BlobPart], { type: 'application/zip' });
   triggerDownload(blob, `batch-download-${Date.now()}.zip`);
 }

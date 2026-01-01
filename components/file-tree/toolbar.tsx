@@ -1,21 +1,27 @@
-"use client"
+'use client';
 
-import { SearchIcon, UploadCloudIcon, DownloadIcon, ZapIcon, HardDrive } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Switch } from "@/components/ui/switch"
-import { CircularProgress } from "@/components/ui/circular-progress"
-import { cn } from "@/lib/utils"
+import {
+  SearchIcon,
+  UploadCloudIcon,
+  DownloadIcon,
+  ZapIcon,
+  HardDrive,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Switch } from '@/components/ui/switch';
+import { CircularProgress } from '@/components/ui/circular-progress';
+import { cn } from '@/lib/utils';
 
 interface ToolbarProps {
-  globalFilter: string
-  setGlobalFilter: (value: string) => void
-  isAccelerated: boolean
-  setIsAccelerated: (value: boolean) => void
-  isDownloading: boolean
-  downloadProgress: number
-  selectedRowCount: number
-  onBatchDownload: () => void
-  url?: string
+  globalFilter: string;
+  setGlobalFilter: (value: string) => void;
+  isAccelerated: boolean;
+  setIsAccelerated: (value: boolean) => void;
+  isDownloading: boolean;
+  downloadProgress: number;
+  selectedRowCount: number;
+  onBatchDownload: () => void;
+  url?: string;
 }
 
 export function Toolbar({
@@ -50,12 +56,12 @@ export function Toolbar({
       </div>
 
       {/* Acceleration Mode - Left on desktop */}
-      <div 
+      <div
         className={cn(
-          "flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1 cursor-pointer select-none",
-          isAccelerated 
-            ? "bg-blue-500/5 border-blue-500/20 text-blue-600" 
-            : "border-input text-muted-foreground bg-muted/50 hover:bg-background"
+          'flex items-center gap-2 px-2.5 h-8 rounded-md transition-all border sm:order-1 cursor-pointer select-none',
+          isAccelerated
+            ? 'bg-blue-500/5 border-blue-500/20 text-blue-600'
+            : 'border-input text-muted-foreground bg-muted/50 hover:bg-background'
         )}
         onClick={() => setIsAccelerated(!isAccelerated)}
       >
@@ -73,11 +79,7 @@ export function Toolbar({
 
       {/* Action Buttons - Right on desktop */}
       <div className="flex flex-wrap items-center gap-2 sm:order-3">
-        <Button 
-          variant="outline" 
-          size="sm"
-          className="h-8 px-2 sm:px-3"
-        >
+        <Button variant="outline" size="sm" className="h-8 px-2 sm:px-3">
           <UploadCloudIcon className="size-4 text-muted-foreground" />
           <span className="hidden sm:inline">上传文件</span>
         </Button>
@@ -93,7 +95,7 @@ export function Toolbar({
             <span className="hidden sm:inline">网盘计划</span>
           </a>
         </Button>
-        
+
         <Button
           variant="outline"
           size="sm"
@@ -110,6 +112,5 @@ export function Toolbar({
         </Button>
       </div>
     </div>
-  )
+  );
 }
-

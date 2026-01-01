@@ -20,9 +20,7 @@ export function YearSelector({
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger
-        className="flex items-center gap-2 rounded-lg p-2 border bg-fd-secondary/50 text-start text-fd-secondary-foreground transition-colors hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground"
-      >
+      <PopoverTrigger className="flex items-center gap-2 rounded-lg p-2 border bg-fd-secondary/50 text-start text-fd-secondary-foreground transition-colors hover:bg-fd-accent data-[state=open]:bg-fd-accent data-[state=open]:text-fd-accent-foreground">
         <span className="text-sm font-medium">{currentYear}</span>
         <ChevronsUpDown className="shrink-0 ms-auto size-4 text-fd-muted-foreground" />
       </PopoverTrigger>
