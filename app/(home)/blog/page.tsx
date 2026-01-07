@@ -1,18 +1,11 @@
 import Link from 'next/link';
 import { blog } from '@/lib/source';
-import { PathUtils } from 'fumadocs-core/source';
 import BannerImage from './banner-hoa.png';
 import Image from 'next/image';
 
-function getName(path: string) {
-  return PathUtils.basename(path, PathUtils.extname(path));
-}
-
 export default function Page() {
   const posts = [...blog.getPages()].sort(
-    (a, b) =>
-      new Date(b.data.date ?? getName(b.path)).getTime() -
-      new Date(a.data.date ?? getName(a.path)).getTime()
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   );
 
   return (
@@ -44,9 +37,7 @@ export default function Page() {
             </p>
 
             <p className="text-brand mt-auto pt-4 text-xs">
-              {new Date(
-                post.data.date ?? getName(post.path)
-              ).toLocaleDateString('en-US', {
+              {new Date(post.data.date).toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',

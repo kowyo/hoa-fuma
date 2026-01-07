@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { blog } from '@/lib/source';
 import { getMDXComponents } from '@/mdx-components';
-import { PathUtils } from 'fumadocs-core/source';
 
 export default async function Page(props: {
   params: Promise<{ slug: string }>;
@@ -23,10 +22,7 @@ export default async function Page(props: {
 
       <div className="text-fd-muted-foreground mb-8 flex flex-row items-center gap-2 text-sm">
         <p>
-          {new Date(
-            page.data.date ??
-              PathUtils.basename(page.path, PathUtils.extname(page.path))
-          ).toLocaleDateString('en-US', {
+          {new Date(page.data.date).toLocaleDateString('en-US', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
