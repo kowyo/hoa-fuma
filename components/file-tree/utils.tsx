@@ -11,7 +11,12 @@ import {
   FileChartPie,
   LucideIcon,
 } from 'lucide-react';
-import type { FileNode, FileProps, FolderProps, DownloadFile } from './types';
+import type {
+  FileNode,
+  FileProps,
+  FolderProps,
+  DownloadFile,
+} from '@/lib/types';
 
 const EXTENSION_MAP: Record<string, LucideIcon> = {
   pdf: FileTextIcon,

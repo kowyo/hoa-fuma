@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { FileNode } from './types';
+import type { FileNode } from '@/lib/types';
 import {
   getFileNodes,
   flattenNodes,

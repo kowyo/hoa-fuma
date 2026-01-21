@@ -9,6 +9,7 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
+import { cn } from '@/lib/utils';
 
 export default async function Page(props: {
   params: Promise<{ year: string; slug?: string[] }>;
@@ -22,13 +23,22 @@ export default async function Page(props: {
   return (
     <DocsPage toc={page.data.toc} full={page.data.full}>
       <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
+      <DocsDescription
+        className={cn('text-base', page.data.course ? 'mb-0' : undefined)}
+      >
+        {page.data.description}
+      </DocsDescription>
       <DocsBody>
         <MDX
-          components={getMDXComponents({
-            // this allows you to link to other pages with relative file paths
-            a: createRelativeLink(source, page),
-          })}
+          components={getMDXComponents(
+            {
+              // this allows you to link to other pages with relative file paths
+              a: createRelativeLink(source, page),
+            },
+            {
+              course: page.data.course,
+            }
+          )}
         />
       </DocsBody>
     </DocsPage>

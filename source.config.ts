@@ -9,10 +9,32 @@ import { z } from 'zod';
 
 // You can customise Zod schemas for frontmatter and `meta.json` here
 // see https://fumadocs.dev/docs/mdx/collections
+const courseInfoSchema = z.object({
+  credit: z.number(),
+  assessmentMethod: z.string(),
+  courseNature: z.string(),
+  hourDistribution: z.object({
+    theory: z.number(),
+    lab: z.number(),
+    practice: z.number(),
+    exercise: z.number(),
+    computer: z.number(),
+    tutoring: z.number(),
+  }),
+  gradingScheme: z.object({
+    classParticipation: z.number(),
+    homeworkAssignments: z.number(),
+    laboratoryWork: z.number(),
+    finalExamination: z.number(),
+  }),
+});
+
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
-    schema: frontmatterSchema,
+    schema: frontmatterSchema.extend({
+      course: courseInfoSchema.optional(),
+    }),
     postprocess: {
       includeProcessedMarkdown: true,
     },

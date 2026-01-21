@@ -13,7 +13,7 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { FileNode } from './types';
+import type { FileNode } from '@/lib/types';
 import { getFileIcon, getAcceleratedUrl, formatBytes } from './utils';
 import { downloadSingleFile } from './utils';
 
