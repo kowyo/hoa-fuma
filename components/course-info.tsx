@@ -73,13 +73,13 @@ export function CourseInfo({ data, className }: CourseInfoProps) {
         className
       )}
     >
-      <div className="space-y-6 px-5 py-4">
-        <div>
+      <div className="space-y-4 px-5 py-4">
+        <div className="flex flex-wrap items-center gap-4">
           <h4 className="flex items-center gap-2 text-sm font-semibold">
             <Info className="size-4 text-blue-500" />
             基本信息
           </h4>
-          <dl className="mt-3 flex flex-wrap items-start gap-4">
+          <dl className="flex flex-wrap items-start gap-4">
             <InfoItem
               label="学分"
               icon={GraduationCap}
@@ -94,12 +94,12 @@ export function CourseInfo({ data, className }: CourseInfoProps) {
           </dl>
         </div>
 
-        <div className="border-t pt-4">
+        <div className="flex flex-wrap items-center gap-4 border-t pt-4">
           <h4 className="flex items-center gap-2 text-sm font-semibold">
             <Clock className="size-4 text-orange-500" />
             学时分配
           </h4>
-          <dl className="mt-3 flex flex-wrap items-start gap-4">
+          <dl className="flex flex-wrap items-start gap-4">
             {data.hourDistribution.theory > 0 && (
               <InfoItem
                 label="理论"
@@ -145,12 +145,12 @@ export function CourseInfo({ data, className }: CourseInfoProps) {
           </dl>
         </div>
 
-        <div className="border-t pt-4">
+        <div className="flex flex-wrap items-center gap-4 border-t pt-4">
           <h4 className="flex items-center gap-2 text-sm font-semibold">
             <Award className="size-4 text-yellow-500" />
             成绩构成
           </h4>
-          <dl className="mt-3 flex flex-wrap items-start gap-4">
+          <dl className="flex flex-wrap items-start gap-4">
             {data.gradingScheme.classParticipation > 0 && (
               <InfoItem
                 label="平时表现"
