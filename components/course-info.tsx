@@ -145,7 +145,7 @@ export function CourseInfo({ data, className }: CourseInfoProps) {
               成绩构成
             </h4>
           </div>
-          <div className="flex w-full" style={{ gap: '1 px' }}>
+          <div className="flex w-full" style={{ gap: '1px' }}>
             {data.gradingScheme.classParticipation > 0 && (
               <div
                 style={{ width: `${data.gradingScheme.classParticipation}%` }}
