@@ -32,7 +32,7 @@ def create_plan_dir(plan: Plan):
     plan_dir.mkdir(parents=True, exist_ok=True)
 
 
-async def update_plan_course(plan: Plan, repos_list):
+def update_plan_course(plan: Plan, repos_list):
     # print(f"Listing plan {p.plan_id}'s courses...")
     courses: list[str] = str(
         subprocess.run(
