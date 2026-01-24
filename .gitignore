@@ -29,5 +29,3 @@ next-env.d.ts
 # tools
 .vscode
 .claude
-
-content/
