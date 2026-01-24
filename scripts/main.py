@@ -77,8 +77,13 @@ def fetch_repo_readme(owner, repo):
     file_path = p / f"{repo}.mdx"
     if not file_path.exists():
         print(f"Fetching {repo}...")
-        gh_repo = g.get_repo(f"{owner}/{repo}")
-        contents = gh_repo.get_contents("README.md", ref="main")
+        try:
+            gh_repo = g.get_repo(f"{owner}/{repo}")
+            contents = gh_repo.get_contents("README.md", ref="main")
+        except ValueError:
+            print("Error fetching GitHub files!")
+            raise
+
         content = contents.decoded_content.decode("utf-8")
         with file_path.open(mode="w", encoding="utf-8") as f:
             f.write(content)
@@ -116,8 +121,7 @@ def main():
     plans: list[Plan] = []
     plans_list = str(
         subprocess.run(
-            args="hoa plans",
-            shell=True,
+            args=["hoa", "plans"],
             capture_output=True,
             text=True,
         ).stdout
