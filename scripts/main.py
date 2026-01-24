@@ -85,7 +85,7 @@ def fetch_repo_readme(owner, repo):
 
 def create_metadata(plan: Plan):
     year_path = Path(f"content/docs/{plan.plan_year}/meta.json")
-    with open(file=year_path, mode="w") as f:
+    with open(file=year_path, mode="w", encoding="utf-8") as f:
         year_info: dict = {"title": f"{plan.plan_year}"}
         json.dump(year_info, f)
 
