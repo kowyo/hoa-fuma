@@ -30,4 +30,6 @@ next-env.d.ts
 .vscode
 .claude
 
+# artifacts
 content/
+repos/
