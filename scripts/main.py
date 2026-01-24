@@ -136,11 +136,11 @@ def main():
         )
 
     print("Adding courses..")
-    for idx, p in enumerate(plans):
-        asyncio.run(main=update_plan_course(p, repos_list))
+    for p in plans:
+        update_plan_course(p, repos_list)
 
     print("Creating dirs...")
-    for idx, p in enumerate(plans):
+    for p in plans:
         create_plan_dir(plan=p)
 
     print("Downloading repo pages...")
@@ -148,11 +148,11 @@ def main():
         fetch_repo_readme(owner="HITSZ-OpenAuto", repo=repo_id)
 
     print("Creating course pages...")
-    for idx, p in enumerate(plans):
+    for p in plans:
         create_course_page(plan=p)
 
     print("Creating meta.json...")
-    for idx, p in enumerate(plans):
+    for p in plans:
         create_metadata(plan=p)
 
 
