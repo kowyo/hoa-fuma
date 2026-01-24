@@ -4,12 +4,9 @@ import subprocess
 import json
 
 from pathlib import Path
-from dotenv import load_dotenv
 from github import Auth, Github
 
-
-load_dotenv()
-access_token = str(os.environ.get("GITHUB_ACCESS_TOKEN"))
+access_token = str(os.environ.get("PERSONAL_ACCESS_TOKEN"))
 auth = Auth.Token(token=access_token)
 g = Github(auth=auth)
 
