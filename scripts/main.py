@@ -110,8 +110,7 @@ def main():
 
     print("Reading exsiting repos")
     with open(file="repos_list.txt") as f:
-        for x in f:
-            repos_list.append(str(x).strip())
+        repos_list = [line.strip() for line in f]
 
     plans: list[Plan] = []
     plans_list = str(
