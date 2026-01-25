@@ -8,6 +8,9 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from githubkit import GitHub
+from rich.progress import Progress, TaskID
+
+from tree_utils import flat_to_tree, tree_to_json_string
 
 
 @dataclass
@@ -36,7 +39,11 @@ async def run_hoa(*args: str, sem: asyncio.Semaphore | None = None) -> list[str]
 
 
 async def fetch_repo_data(
-    github: GitHub, repo: str, sem: asyncio.Semaphore | None = None
+    github: GitHub,
+    repo: str,
+    sem: asyncio.Semaphore | None = None,
+    progress: Progress | None = None,
+    task_id: TaskID | None = None,
 ) -> str:
     """Fetch README and worktree.json from GitHub and cache them locally in 'repos/'."""
     path = Path("repos") / f"{repo}.mdx"
@@ -66,11 +73,18 @@ async def fetch_repo_data(
         except Exception as e:
             print(f"Error fetching worktree.json for {repo}: {e}")
 
+    if progress is not None and task_id is not None:
+        progress.advance(task_id)
+
     return path.read_text() if path.exists() else ""
 
 
 async def update_plan(
-    plan: Plan, repos_set: set[str], sem: asyncio.Semaphore | None = None
+    plan: Plan,
+    repos_set: set[str],
+    sem: asyncio.Semaphore | None = None,
+    progress: Progress | None = None,
+    task_id: TaskID | None = None,
 ) -> None:
     """Fetch courses for a specific plan and filter by existing repos."""
     lines = await run_hoa("courses", plan.id, sem=sem)
@@ -78,6 +92,8 @@ async def update_plan(
         parts = line.split()
         if len(parts) >= 2 and parts[0] in repos_set:
             plan.courses.append(Course(parts[0], parts[1]))
+    if progress is not None and task_id is not None:
+        progress.advance(task_id)
 
 
 async def generate_pages(plans: list[Plan]) -> None:
@@ -102,9 +118,25 @@ async def generate_pages(plans: list[Plan]) -> None:
         # Generate course pages
         for course in plan.courses:
             path = repos_dir / f"{course.code}.mdx"
-            content = path.read_text()
+            json_path = repos_dir / f"{course.code}.json"
+
+            # Remove first two lines (title)
+            content = "\n".join(path.read_text().splitlines()[2:])
+
+            # Generate FileTree from JSON if exists
+            filetree_content = ""
+            if json_path.exists():
+                try:
+                    flat_data = json.loads(json_path.read_text())
+                    tree = flat_to_tree(flat_data, course.code)
+                    if tree:  # Only add if there are files to show
+                        tree_json = tree_to_json_string(tree)
+                        filetree_content = f'\n\n## 资源下载\n\n<FileTreeFromData repo="{course.code}" data={{JSON.parse(\'{tree_json}\')}} />'
+                except Exception as e:
+                    print(f"Error processing JSON for {course.code}: {e}")
+
             (major_dir / f"{course.code}.mdx").write_text(
-                f"---\ntitle: {course.name}\n---\n\n{content}"
+                f"---\ntitle: {course.name}\n---\n\n{content}{filetree_content}"
             )
 
     # Write year metadata once per year
@@ -137,13 +169,24 @@ async def main() -> None:
         if len(p) >= 4:
             plans.append(Plan(id=p[0], year=p[1], major_code=p[2], major_name=p[3]))
 
-    print(f"Fetching courses for {len(plans)} plans...")
-    await asyncio.gather(*(update_plan(p, repos_list) for p in plans))
+    hoa_sem = asyncio.Semaphore(10)
+    with Progress() as progress:
+        task = progress.add_task("Fetching courses...", total=len(plans))
+        await asyncio.gather(
+            *(
+                update_plan(p, repos_list, sem=hoa_sem, progress=progress, task_id=task)
+                for p in plans
+            )
+        )
 
-    print(f"Fetching data for {len(repos_list)} repos...")
-    await asyncio.gather(
-        *(fetch_repo_data(github, r, sem=github_sem) for r in repos_list)
-    )
+    with Progress() as progress:
+        task = progress.add_task("Fetching repos...", total=len(repos_list))
+        await asyncio.gather(
+            *(
+                fetch_repo_data(github, r, sem=github_sem, progress=progress, task_id=task)
+                for r in repos_list
+            )
+        )
 
     print("Generating pages...")
     await generate_pages(plans)

@@ -31,7 +31,6 @@ next-env.d.ts
 .claude
 
 # artifacts
-content/
 repos/
 repos_list.txt
 scripts/.env
