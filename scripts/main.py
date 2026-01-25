@@ -35,11 +35,14 @@ async def run_hoa(*args: str, sem: asyncio.Semaphore | None = None) -> list[str]
         return stdout.decode().splitlines()
 
 
-async def fetch_readme(
+async def fetch_repo_data(
     github: GitHub, repo: str, sem: asyncio.Semaphore | None = None
 ) -> str:
-    """Fetch README from GitHub and cache it locally in 'repos/'."""
+    """Fetch README and worktree.json from GitHub and cache them locally in 'repos/'."""
     path = Path("repos") / f"{repo}.mdx"
+    json_path = Path("repos") / f"{repo}.json"
+
+    # Fetch README if not exists
     if not path.exists():
         try:
             async with (sem or asyncio.Lock()):
@@ -49,9 +52,21 @@ async def fetch_readme(
             encoded = getattr(resp.parsed_data, "content", "").replace("\n", "")
             path.write_text(base64.b64decode(encoded).decode("utf-8"))
         except Exception as e:
-            print(f"Error fetching {repo}: {e}")
-            return ""
-    return path.read_text()
+            print(f"Error fetching README for {repo}: {e}")
+
+    # Fetch worktree.json if not exists
+    if not json_path.exists():
+        try:
+            async with (sem or asyncio.Lock()):
+                resp = await github.rest.repos.async_get_content(
+                    "HITSZ-OpenAuto", repo, "worktree.json", ref="worktree"
+                )
+            encoded = getattr(resp.parsed_data, "content", "").replace("\n", "")
+            json_path.write_text(base64.b64decode(encoded).decode("utf-8"))
+        except Exception as e:
+            print(f"Error fetching worktree.json for {repo}: {e}")
+
+    return path.read_text() if path.exists() else ""
 
 
 async def update_plan(
@@ -131,7 +146,7 @@ async def main() -> None:
     )
     await asyncio.gather(
         *(update_plan(p, repos_list, sem=hoa_sem) for p in plans),
-        *(fetch_readme(github, r, sem=github_sem) for r in repos_list),
+        *(fetch_repo_data(github, r, sem=github_sem) for r in repos_list),
     )
 
     await generate_pages(plans)
