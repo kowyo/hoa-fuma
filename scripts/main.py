@@ -82,7 +82,6 @@ async def update_plan(
 
 async def generate_pages(plans: list[Plan]) -> None:
     """Generate course pages and metadata from plans."""
-    print("Generating pages...")
     years = set()
     repos_dir = Path("repos")
     docs_dir = Path("content/docs")
@@ -103,11 +102,10 @@ async def generate_pages(plans: list[Plan]) -> None:
         # Generate course pages
         for course in plan.courses:
             path = repos_dir / f"{course.code}.mdx"
-            if path.exists():
-                content = path.read_text()
-                (major_dir / f"{course.code}.mdx").write_text(
-                    f"---\ntitle: {course.name}\n---\n\n{content}"
-                )
+            content = path.read_text()
+            (major_dir / f"{course.code}.mdx").write_text(
+                f"---\ntitle: {course.name}\n---\n\n{content}"
+            )
 
     # Write year metadata once per year
     for year in years:
@@ -130,25 +128,24 @@ async def main() -> None:
         if line.strip()
     }
 
-    hoa_sem = asyncio.Semaphore(20)
     github_sem = asyncio.Semaphore(20)
 
     print("Reading plans...")
     plans = []
-    for line in await run_hoa("plans", sem=hoa_sem):
+    for line in await run_hoa("plans"):
         p = line.split()
         if len(p) >= 4:
             plans.append(Plan(id=p[0], year=p[1], major_code=p[2], major_name=p[3]))
 
-    print(
-        f"Fetching courses for {len(plans)} plans and "
-        f"READMEs for {len(repos_list)} repos..."
-    )
+    print(f"Fetching courses for {len(plans)} plans...")
+    await asyncio.gather(*(update_plan(p, repos_list) for p in plans))
+
+    print(f"Fetching data for {len(repos_list)} repos...")
     await asyncio.gather(
-        *(update_plan(p, repos_list, sem=hoa_sem) for p in plans),
-        *(fetch_repo_data(github, r, sem=github_sem) for r in repos_list),
+        *(fetch_repo_data(github, r, sem=github_sem) for r in repos_list)
     )
 
+    print("Generating pages...")
     await generate_pages(plans)
 
     print("Done!")
