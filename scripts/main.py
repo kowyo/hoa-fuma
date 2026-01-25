@@ -86,8 +86,8 @@ async def main() -> None:
         if line.strip()
     }
 
-    hoa_sem = asyncio.Semaphore(5)
-    github_sem = asyncio.Semaphore(10)
+    hoa_sem = asyncio.Semaphore(20)
+    github_sem = asyncio.Semaphore(20)
 
     print("Reading plans...")
     plans = []
