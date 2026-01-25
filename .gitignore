@@ -33,3 +33,5 @@ next-env.d.ts
 # artifacts
 content/
 repos/
+repos_list.txt
+scripts/.env
