@@ -10,6 +10,8 @@ from dotenv import load_dotenv
 from githubkit import GitHub
 from rich.progress import Progress, TaskID
 
+from tree_utils import flat_to_tree, tree_to_json_string
+
 
 @dataclass
 class Course:
@@ -116,10 +118,25 @@ async def generate_pages(plans: list[Plan]) -> None:
         # Generate course pages
         for course in plan.courses:
             path = repos_dir / f"{course.code}.mdx"
+            json_path = repos_dir / f"{course.code}.json"
+
             # Remove first two lines (title)
             content = "\n".join(path.read_text().splitlines()[2:])
+
+            # Generate FileTree from JSON if exists
+            filetree_content = ""
+            if json_path.exists():
+                try:
+                    flat_data = json.loads(json_path.read_text())
+                    tree = flat_to_tree(flat_data, course.code)
+                    if tree:  # Only add if there are files to show
+                        tree_json = tree_to_json_string(tree)
+                        filetree_content = f'\n\n## 资源下载\n\n<FileTreeFromData repo="{course.code}" data={{JSON.parse(\'{tree_json}\')}} />'
+                except Exception as e:
+                    print(f"Error processing JSON for {course.code}: {e}")
+
             (major_dir / f"{course.code}.mdx").write_text(
-                f"---\ntitle: {course.name}\n---\n\n{content}"
+                f"---\ntitle: {course.name}\n---\n\n{content}{filetree_content}"
             )
 
     # Write year metadata once per year
