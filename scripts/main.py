@@ -65,6 +65,41 @@ async def update_plan(
             plan.courses.append(Course(parts[0], parts[1]))
 
 
+async def generate_pages(plans: list[Plan]) -> None:
+    """Generate course pages and metadata from plans."""
+    print("Generating pages...")
+    years = set()
+    repos_dir = Path("repos")
+    docs_dir = Path("content/docs")
+    for plan in plans:
+        years.add(plan.year)
+        major_dir = docs_dir / plan.year / plan.major_code
+        major_dir.mkdir(parents=True, exist_ok=True)
+
+        # Write major metadata
+        (major_dir / "meta.json").write_text(
+            json.dumps(
+                {"title": plan.major_name, "root": True, "defaultOpen": True},
+                indent=2,
+                ensure_ascii=False,
+            )
+        )
+
+        # Generate course pages
+        for course in plan.courses:
+            path = repos_dir / f"{course.code}.mdx"
+            if path.exists():
+                content = path.read_text()
+                (major_dir / f"{course.code}.mdx").write_text(
+                    f"---\ntitle: {course.name}\n---\n\n{content}"
+                )
+
+    # Write year metadata once per year
+    for year in years:
+        meta_path = docs_dir / year / "meta.json"
+        meta_path.write_text(json.dumps({"title": year}, indent=2))
+
+
 async def main() -> None:
     load_dotenv()
     token = os.environ.get("PERSONAL_ACCESS_TOKEN")
@@ -72,8 +107,6 @@ async def main() -> None:
         sys.exit("Error: PERSONAL_ACCESS_TOKEN environment variable is required.")
 
     github = GitHub(token)
-    docs_dir = Path("content/docs")
-    docs_dir.mkdir(parents=True, exist_ok=True)
     Path("repos").mkdir(exist_ok=True)
 
     repos_list = {
@@ -101,34 +134,7 @@ async def main() -> None:
         *(fetch_readme(github, r, sem=github_sem) for r in repos_list),
     )
 
-    print("Generating pages...")
-    years = set()
-    for plan in plans:
-        years.add(plan.year)
-        major_dir = docs_dir / plan.year / plan.major_code
-        major_dir.mkdir(parents=True, exist_ok=True)
-
-        # Write major metadata
-        (major_dir / "meta.json").write_text(
-            json.dumps(
-                {"title": plan.major_name, "root": True, "defaultOpen": True},
-                indent=2,
-                ensure_ascii=False,
-            )
-        )
-
-        # Generate course pages
-        for course in plan.courses:
-            content = await fetch_readme(github, course.code, sem=github_sem)
-            if content:
-                (major_dir / f"{course.code}.mdx").write_text(
-                    f"---\ntitle: {course.name}\n---\n\n{content}"
-                )
-
-    # Write year metadata once per year
-    for year in years:
-        meta_path = docs_dir / year / "meta.json"
-        meta_path.write_text(json.dumps({"title": year}, indent=2))
+    await generate_pages(plans)
 
     print("Done!")
 
