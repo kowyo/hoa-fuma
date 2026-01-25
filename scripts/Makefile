@@ -17,7 +17,7 @@ install-hooks: ## Install pre-commit hooks
 	@echo "✓ Pre-commit hooks installed!"
 
 run: ## Run main script
-	cd .. && uv run sripts/main.py
+	cd .. && uv run scripts/main.py
 
 lint: ## Run ruff linter
 	uv run ruff check . --fix
