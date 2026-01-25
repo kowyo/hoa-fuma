@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "githubkit>=0.14.3",
     "python-dotenv>=1.2.1",
+    "rich>=14.3.1",
 ]
 
 [tool.ruff.lint]
