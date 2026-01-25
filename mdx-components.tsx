@@ -3,7 +3,8 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import { CourseInfo } from '@/components/course-info';
 import type { CourseInfoData } from '@/lib/types';
-import { Files, Folder, File } from '@/components/file-tree';
+import { Files, Folder, File, FileTreeFromData } from '@/components/file-tree';
+import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 
 type MdxContext = {
   course?: CourseInfoData;
@@ -18,6 +19,9 @@ export function getMDXComponents(
     Files,
     Folder,
     File,
+    FileTreeFromData,
+    Accordion,
+    Accordions,
     CourseInfo: (props: ComponentProps<typeof CourseInfo>) => (
       <CourseInfo {...props} data={props.data ?? context?.course} />
     ),

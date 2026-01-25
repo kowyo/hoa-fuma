@@ -5,16 +5,45 @@ import {
   DocsPage,
   DocsTitle,
 } from 'fumadocs-ui/layouts/docs/page';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getMDXComponents } from '@/mdx-components';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import { cn } from '@/lib/utils';
+import type { Folder } from 'fumadocs-core/page-tree';
+
+function getFirstPageUrl(node: Folder): string | null {
+  for (const child of node.children) {
+    if (child.type === 'page') {
+      return child.url;
+    }
+    if (child.type === 'folder') {
+      const url = getFirstPageUrl(child);
+      if (url) return url;
+    }
+  }
+  return null;
+}
 
 export default async function Page(props: {
   params: Promise<{ year: string; slug?: string[] }>;
 }) {
   const params = await props.params;
+
+  // If no slug, redirect to first child page
+  if (!params.slug || params.slug.length === 0) {
+    const yearNode = source.pageTree.children.find(
+      (node): node is Folder =>
+        node.type === 'folder' && node.name === params.year
+    );
+    if (yearNode) {
+      const firstPageUrl = getFirstPageUrl(yearNode);
+      if (firstPageUrl) {
+        redirect(firstPageUrl);
+      }
+    }
+  }
+
   const page = source.getPage([params.year, ...(params.slug ?? [])]);
   if (!page) notFound();
 

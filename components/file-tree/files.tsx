@@ -3,11 +3,31 @@
 import { ReactNode, useMemo } from 'react';
 import { transformChildrenToData } from './utils';
 import { FileTreeTable } from './table';
+import type { FileNode } from '@/lib/types';
 
 export interface FilesProps {
   children: ReactNode;
   className?: string;
   url?: string;
+}
+
+export interface FileTreeFromDataProps {
+  data: FileNode[];
+  repo: string;
+  className?: string;
+}
+
+/**
+ * FileTreeFromData component - renders FileTree directly from pre-computed data.
+ * Used when generating MDX at build time with pre-computed tree structure.
+ */
+export function FileTreeFromData({
+  data,
+  repo,
+  className,
+}: FileTreeFromDataProps) {
+  const url = `https://github.com/HITSZ-OpenAuto/${repo}`;
+  return <FileTreeTable data={data} className={className} url={url} />;
 }
 
 /**
