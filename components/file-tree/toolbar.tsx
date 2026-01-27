@@ -68,7 +68,7 @@ export function Toolbar({
         <Switch
           checked={isAccelerated}
           onCheckedChange={setIsAccelerated}
-          className="data-[state=checked]:text-fd-primary/10 scale-75"
+          className="scale-75"
           onClick={(e) => e.stopPropagation()}
         />
       </div>
