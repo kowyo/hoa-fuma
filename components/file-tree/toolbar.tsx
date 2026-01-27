@@ -58,19 +58,17 @@ export function Toolbar({
         className={cn(
           'flex h-8 cursor-pointer items-center gap-2 rounded-md border px-2.5 transition-all select-none sm:order-1',
           isAccelerated
-            ? 'border-blue-500/20 bg-blue-500/5 text-blue-600'
+            ? 'bg-fd-primary/10 text-fd-primary'
             : 'border-input text-muted-foreground bg-muted/50 hover:bg-background'
         )}
         onClick={() => setIsAccelerated(!isAccelerated)}
       >
         <ZapIcon className="size-4" />
-        <span className="text-sm font-medium whitespace-nowrap">
-          校园网加速
-        </span>
+        <span className="text-sm whitespace-nowrap">校园网加速</span>
         <Switch
           checked={isAccelerated}
           onCheckedChange={setIsAccelerated}
-          className="scale-75 data-[state=checked]:bg-blue-600"
+          className="scale-75"
           onClick={(e) => e.stopPropagation()}
         />
       </div>
