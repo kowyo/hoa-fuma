@@ -1,0 +1,100 @@
+---
+title: 1. 单文档修改和单文件夹上传文件
+date: 2025-01-10
+description: 例如，hoa.moe 上 课程描述页面 的修改
+authors:
+  - name: IcyDesert
+    link: https://github.com/IcyDesert
+    image: https://github.com/IcyDesert.png
+weight: 2
+cascade:
+  type: blog
+next: /blog/contribution-guide/prerequisites
+prev: /blog/contribution-guide/edit-multi-docs-and-upload-files
+---
+
+> [!IMPORTANT]  
+> 本文是系列教程中的一篇，该系列教程始于 [0. 预备知识](/blog/contribution-guide/prerequisites)。若有疑惑，请先阅读该文。
+
+<Callout type="info">
+下面介绍的两种情况流程相近，如果有问题可以对照着参考。
+
+</Callout>
+
+## 单文档修改：以课程文档为例
+
+对课程文档进行修改应该是`单文档修改`的主要情况。HITSZ OpenAuto 的课程文档大致可分为以下几部分，如果你发现其中任一项有缺失/与实际情况不符，或是你有自己的理解与体会，都可以增补。
+
+- 课程名
+- 课程性质：必修/限选/选修；考试课/考查课；学分/学时；成绩构成
+- 教材与参考书
+- 授课教师及授课风格
+- 授课内容/课程建议/备考策略
+
+从整体上看，修改文档可以分为两步：
+
+### 在分支仓库修改文档
+
+我们的课程文档界面实际上已经做好了入口，
+![](./img/link-to-repo.png)
+由于只有 HOA 团队成员具有直接写入权限，因此贡献者一般需要先创建**分支仓库（Fork）**。点击按钮，创建仓库在自己账号下的分支（fork），
+![](./img/fork-repo.png)
+就可以在 GitHub 的网页编辑器修改内容，如下图所示：
+![](./img/commit-doc.png)
+图示：
+
+1. 编辑器，使用 Markdown 语言进行写作。
+
+2. 预览 Markdown 渲染效果。注意，**HOA 使用的渲染器和此渲染器不同，预览效果仅供参考。**
+
+3. 修改此文件路径。用 `..` 表示跳到上一级文件夹。一般不需要修改。
+
+4. 提交你的修改。关于 commit message 的填写，详见下文[公约](#公约)。
+
+### 发起 Pull Request
+
+> Pull Request 指把**你的仓库里新的内容**合并进**我们已过时的仓库内容**的过程。
+
+点击按钮，GitHub 会要求你填写 PR 的描述。我们给这份描述添加了一些指引，因此只需按照指引填写即可。
+![](./img/pull-request.png)
+填写完成后点击 `Create pull request` 按钮；我们将对 Pull Request 进行审核，如有问题将指出，还请留意 GitHub 和邮箱通知。
+
+## 单文件夹上传文件
+
+GitHub 提供的方法实际上支持多文件上传，但这些文件必须上传到**同一个目标文件夹**，因此称为「单文件夹上传」。
+
+使用场景如：上传某课程试卷和/或其答案，同属 exams 文件夹
+
+### 手动 Fork 仓库
+
+由于我们的仓库设置了文件上传保护，需要手动创建自己的仓库分支。
+
+![](./img/fork-repo-actively.png)
+
+### 在自己的仓库上传文件
+
+仓库里的文件夹一般有四个，请对应上传：
+
+- assignments 作业
+- exams 考试
+- notes 个人笔记
+- slides 来自教师的资料
+
+在自己的仓库总页面，点击你想上传的文件夹，然后点如图按钮；在上传界面拖拽文件即可。这一步支持多文件上传。
+
+![](./img/files-upload-button.png)
+
+<Callout type="info">
+注意，请确保所上传的文件不是 [公约](#公约) 中所述「**不宜上传文件**」；填写 commit message 仍然需要遵守 [公约](#公约)。
+
+</Callout>
+
+> 如果你是使用 codespace 进行编辑的，千万要记得保存！！！我写了半个小时的课程评价误触退出之后全没了！
+
+> 文 / [Cecilia](https://github.com/mircecilia), 2025.1
+
+### 发起 Pull Request
+
+再次回到自己的仓库，主界面会发现显眼的标注
+![](./img/open-pull-request.png)
+然后就是和 [上文](#发起-pull-request) 一样的流程。
