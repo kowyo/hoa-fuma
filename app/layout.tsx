@@ -3,29 +3,22 @@ import 'katex/dist/katex.css';
 import './global.css';
 import { Inter } from 'next/font/google';
 import { Toaster } from '@/components/ui/sonner';
-import Script from 'next/script';
+import type { Metadata } from 'next';
 
 const inter = Inter({
   subsets: ['latin'],
 });
 
+export const metadata: Metadata = {
+  metadataBase: new URL('https://hoa-fuma.vercel.app'),
+};
+
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={inter.className} suppressHydrationWarning>
-      <head>
-        {process.env.NODE_ENV === 'development' && (
-          <Script
-            src="//unpkg.com/react-grab/dist/index.global.js"
-            crossOrigin="anonymous"
-            strategy="beforeInteractive"
-          />
-        )}
-      </head>
       <body className="flex min-h-screen flex-col">
-        <RootProvider>
-          {children}
-          <Toaster />
-        </RootProvider>
+        <RootProvider>{children}</RootProvider>
+        <Toaster />
       </body>
     </html>
   );

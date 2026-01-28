@@ -241,7 +241,6 @@ def main() -> None:
     for filepath in mdx_files:
         if format_mdx_file(filepath):
             modified_count += 1
-            print(f"  Modified: {filepath.relative_to(docs_dir)}")
 
     print(f"\nDone! Modified {modified_count} files.")
 
