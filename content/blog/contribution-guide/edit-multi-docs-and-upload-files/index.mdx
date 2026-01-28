@@ -72,7 +72,12 @@ fatal: unable to access 'https://github.com/<username>/AUTO3005.git/': Open
 然后在**你的仓库**里如图新建 Codespaces，等待页面跳转、加载。可能要等一段时间。
 
 ![](./img/create-codespaces.png)
-_<center>这一步是 Codespaces 应对超大文件的方法。等待的时间里，GitHub 将创建云端虚拟机并把文件通过网络发送上去，如此，文件便成为云端（服务器）的`本地文件`，从而规避了`本地磁盘`的 Git LFS 问题。你可以理解为文件放在网盘上。</center>_
+<p className="text-center">
+  <em>
+    这一步是 Codespaces 应对超大文件的方法。等待的时间里，GitHub
+    将创建云端虚拟机并把文件通过网络发送上去，如此，文件便成为云端（服务器）的`本地文件`，从而规避了`本地磁盘`的 Git LFS 问题。你可以理解为文件放在网盘上。
+  </em>
+</p>
 
 ### 开始修改
 
