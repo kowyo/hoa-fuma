@@ -8,17 +8,17 @@ export function baseOptions(): BaseLayoutProps {
     },
     links: [
       {
-        text: 'Documentation',
+        text: '文档',
         url: '/docs',
         active: 'nested-url',
       },
       {
-        text: 'Blog',
+        text: '博客',
         url: '/blog',
         active: 'nested-url',
         icon: <BookIcon />,
       },
     ],
-    githubUrl: 'https://github.com/HITSZ-OpenAuto/hoa-fuma',
+    githubUrl: 'https://github.com/hitsz-openauto',
   };
 }
